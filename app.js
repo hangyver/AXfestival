@@ -1,0 +1,134 @@
+const page = document.body.dataset.page;
+
+function header(active = page) {
+  const items = [
+    ["home", "index.html", "학술제 소개"],
+    ["program", "program.html", "강의 일정"],
+    ["venue", "venue.html", "행사장 안내"]
+  ];
+  return `
+  <header id="siteHeader" class="site-header fixed inset-x-0 top-0 z-40 text-white">
+    <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 lg:px-8">
+      <a href="index.html" class="flex items-center gap-3" aria-label="제11회 대한민국 약사학술제 홈">
+        <span class="brand-mark grid h-10 w-10 place-items-center rounded-full border border-white/20 bg-white/10 font-display text-xs font-extrabold tracking-wider">KPA</span>
+        <span class="leading-tight"><strong class="block text-sm font-bold">대한민국 약사학술제</strong><span class="block text-[10px] tracking-[.17em] opacity-60">KOREA PHARMACISTS ACADEMIC FESTIVAL</span></span>
+      </a>
+      <nav class="hidden items-center gap-8 md:flex" aria-label="주요 메뉴">
+        ${items.map(([id, href, label]) => `<a class="nav-link text-sm font-medium text-white/75 transition hover:text-white" href="${href}" ${active === id ? 'aria-current="page"' : ""}>${label}</a>`).join("")}
+        <button data-chat-open class="rounded-full bg-white px-5 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-cyan-100">AX Agent</button>
+      </nav>
+      <button id="mobileMenuButton" class="mobile-menu-button grid h-11 w-11 place-items-center rounded-full border border-white/20 md:hidden" aria-label="메뉴 열기" aria-expanded="false">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+    <div id="mobileMenu" class="hidden border-t border-slate-100 bg-white px-5 py-5 text-slate-900 shadow-xl md:hidden">
+      ${items.map(([id, href, label]) => `<a class="block rounded-xl px-4 py-3 text-sm font-bold ${active === id ? "bg-blue-50 text-blue-700" : ""}" href="${href}">${label}</a>`).join("")}
+      <button data-chat-open class="mt-3 w-full rounded-xl bg-slate-900 px-4 py-3 text-left text-sm font-bold text-white">AX 학술제 Agent 열기</button>
+    </div>
+  </header>`;
+}
+
+function footer() {
+  return `<footer class="bg-[#06172a] text-white">
+    <div class="mx-auto grid max-w-7xl gap-10 px-5 py-12 md:grid-cols-[1fr_auto] lg:px-8">
+      <div><p class="font-display text-xl font-extrabold">제11회 대한민국 약사학술제</p><p class="mt-2 text-sm text-slate-400">AX 시대, 약사 직능의 새로운 도약</p></div>
+      <div class="flex flex-wrap gap-x-6 gap-y-2 text-sm text-slate-400"><a href="program.html" class="hover:text-white">강의 일정</a><a href="venue.html" class="hover:text-white">행사장 안내</a><button data-chat-open class="hover:text-white">AX Agent</button></div>
+    </div>
+    <div class="border-t border-white/10 px-5 py-5 text-center text-xs text-slate-500">© 2026 Korea Pharmacists Academic Festival. 행사 세부 내용은 추후 업데이트됩니다.</div>
+  </footer>`;
+}
+
+function chatbot() {
+  return `<div class="fixed bottom-5 right-5 z-50">
+    <section id="chatPanel" class="chat-panel is-closed absolute bottom-[4.7rem] right-0 flex h-[570px] w-[390px] flex-col overflow-hidden rounded-[1.6rem] border border-slate-200 bg-white shadow-2xl" aria-label="AX 학술제 에이전트" aria-hidden="true">
+      <div class="bg-[#071b32] px-5 py-4 text-white"><div class="flex items-center justify-between gap-3"><div class="flex min-w-0 items-center gap-3"><span class="relative grid h-10 w-10 shrink-0 place-items-center rounded-full bg-cyan-400 text-slate-900"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8V4H8M6 8h12a2 2 0 0 1 2 2v8H4v-8a2 2 0 0 1 2-2Z"/><path d="M9 13h.01M15 13h.01M9 18v2M15 18v2"/></svg><i class="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-[#071b32] bg-emerald-400"></i></span><div class="min-w-0"><strong class="block truncate text-sm">AX 학술제 Agent</strong><span class="block truncate text-xs text-slate-400">행사 지식을 연결하는 안내 에이전트</span></div></div><div class="flex shrink-0 items-center"><button id="chatCapture" class="grid h-9 w-9 place-items-center rounded-full text-slate-300 transition hover:bg-white/10 hover:text-white" aria-label="대화를 이미지로 저장" title="대화를 이미지로 저장"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 4 16 6h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3l1.5-2Z"/><circle cx="12" cy="13" r="3"/></svg></button><button id="chatClose" class="grid h-9 w-9 place-items-center rounded-full text-slate-400 transition hover:bg-white/10 hover:text-white" aria-label="에이전트 닫기">✕</button></div></div></div>
+      <div class="flex items-center justify-between border-b border-cyan-100 bg-cyan-50 px-4 py-2.5 text-[11px]"><span class="flex items-center gap-2 font-bold text-cyan-900"><i class="h-2 w-2 rounded-full bg-emerald-500"></i>기본 행사 안내 활성</span><span class="text-cyan-700">RAG 자료 연결 예정</span></div>
+      <div id="chatMessages" class="flex-1 space-y-3 overflow-y-auto bg-slate-50 p-4" aria-live="polite"><div class="chat-message max-w-[88%] rounded-2xl rounded-tl-sm bg-white p-3 text-sm leading-6 text-slate-700 shadow-sm" data-role="assistant">안녕하세요! 제11회 대한민국 약사학술제 AX Agent입니다. 현재는 행사 기본 정보를 안내하며, 강의자료가 확정되면 출처 기반 RAG 답변도 제공할 예정입니다.</div></div>
+      <div id="chatSuggestions" class="flex gap-2 overflow-x-auto border-t border-slate-100 bg-white px-4 py-3"><button class="chat-chip whitespace-nowrap rounded-full border border-slate-200 px-3 py-1.5 text-xs font-bold text-slate-600" data-question="행사 시간은?">행사 시간</button><button class="chat-chip whitespace-nowrap rounded-full border border-slate-200 px-3 py-1.5 text-xs font-bold text-slate-600" data-question="강의실은 어디야?">강의실</button><button class="chat-chip whitespace-nowrap rounded-full border border-slate-200 px-3 py-1.5 text-xs font-bold text-slate-600" data-question="지하철로 어떻게 가?">오시는 길</button></div>
+      <form id="chatForm" class="flex gap-2 border-t border-slate-100 bg-white p-3"><label class="sr-only" for="chatInput">질문 입력</label><input id="chatInput" class="min-w-0 flex-1 rounded-xl bg-slate-100 px-4 py-3 text-sm outline-none ring-blue-500 focus:ring-2" placeholder="행사 정보를 물어보세요" autocomplete="off"><button class="grid h-11 w-11 place-items-center rounded-xl bg-blue-600 text-white" aria-label="질문 보내기"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></button></form>
+    </section>
+    <div id="captureToast" class="pointer-events-none absolute bottom-[4.7rem] right-0 mb-2 w-max translate-y-2 rounded-full bg-slate-950 px-4 py-2 text-xs font-bold text-white opacity-0 shadow-xl transition" role="status">대화 이미지를 저장했습니다</div>
+    <button id="chatLauncher" class="relative grid h-14 w-14 place-items-center rounded-full bg-blue-600 text-white shadow-[0_12px_35px_rgba(13,119,232,.4)] transition hover:-translate-y-1 hover:bg-blue-700" aria-label="AX 학술제 에이전트 열기" aria-expanded="false"><span class="absolute -left-20 rounded-full bg-white px-3 py-1.5 text-[11px] font-extrabold text-blue-700 shadow-lg">AX Agent</span><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"/><path d="M8 10h.01M12 10h.01M16 10h.01"/></svg></button>
+  </div>`;
+}
+document.querySelector("[data-header]").innerHTML = header();
+document.querySelector("[data-footer]").innerHTML = footer();
+document.body.insertAdjacentHTML("beforeend", chatbot());
+
+const siteHeader = document.getElementById("siteHeader");
+const syncHeader = () => siteHeader.classList.toggle("scrolled", scrollY > 18 || page !== "home");
+syncHeader(); addEventListener("scroll", syncHeader, { passive: true });
+
+const menuButton = document.getElementById("mobileMenuButton");
+const mobileMenu = document.getElementById("mobileMenu");
+menuButton.addEventListener("click", () => { const open = mobileMenu.classList.toggle("hidden") === false; menuButton.setAttribute("aria-expanded", open); });
+
+const panel = document.getElementById("chatPanel");
+const launcher = document.getElementById("chatLauncher");
+const input = document.getElementById("chatInput");
+function setChat(open) { panel.classList.toggle("is-closed", !open); panel.setAttribute("aria-hidden", !open); launcher.setAttribute("aria-expanded", open); if (open) setTimeout(() => input.focus(), 100); }
+launcher.addEventListener("click", () => setChat(panel.classList.contains("is-closed")));
+document.getElementById("chatClose").addEventListener("click", () => setChat(false));
+document.querySelectorAll("[data-chat-open]").forEach(button => button.addEventListener("click", () => setChat(true)));
+
+const answers = [
+  [/시간|언제|날짜|몇 시/, "학술제는 2026년 11월 29일 일요일, 오전 10시부터 오후 6시까지 진행됩니다."],
+  [/장소|어디|주소/, "행사 장소는 서울 양재 aT센터(서울 서초구 강남대로 27)입니다. 3층 세계로룸과 4층 창조룸 Ⅰ·Ⅱ를 사용합니다."],
+  [/강의실|룸|교실/, "강의실은 총 3곳입니다. 3층 세계로룸 1개 강의실과 4층 창조룸 2개 강의실(창조룸 Ⅰ, Ⅱ)입니다."],
+  [/지하철|버스|가는 길|오시는/, "신분당선 양재시민의숲역(매헌) 4번 출구와 연결되어 있습니다. 출구에서 도보 약 2분입니다."],
+  [/강사|강의|프로그램|일정/, "강사와 강의 주제는 현재 준비 중입니다. 강의는 오전 10시부터 오후 6시까지 한 시간 단위로 편성되며, 확정되는 대로 강의 일정 페이지에 공개됩니다."],
+  [/주차/, "aT센터 주차장을 이용할 수 있으나 행사일에는 혼잡할 수 있어 대중교통 이용을 권장합니다. 주차 지원 여부는 추후 공지됩니다."],
+  [/슬로건|주제/, "올해의 슬로건은 ‘AX 시대, 약사 직능의 새로운 도약’입니다."],
+];
+function addMessage(text, mine = false) { const el = document.createElement("div"); el.className = `chat-message max-w-[88%] rounded-2xl p-3 text-sm leading-6 ${mine ? "ml-auto rounded-tr-sm bg-blue-600 text-white" : "rounded-tl-sm bg-white text-slate-700 shadow-sm"}`; el.dataset.role = mine ? "user" : "assistant"; el.textContent = text; const box = document.getElementById("chatMessages"); box.appendChild(el); box.scrollTop = box.scrollHeight; }
+function ask(q) { if (!q.trim()) return; addMessage(q, true); setTimeout(() => { const found = answers.find(([pattern]) => pattern.test(q)); addMessage(found ? found[1] : "아직 확정되지 않은 내용이거나 제가 안내하기 어려운 질문이에요. 행사 시간, 장소, 강의실, 교통편을 물어보시면 바로 안내해 드릴게요."); }, 350); }
+document.getElementById("chatForm").addEventListener("submit", e => { e.preventDefault(); const q = input.value; input.value = ""; ask(q); });
+document.querySelectorAll(".chat-chip").forEach(button => button.addEventListener("click", () => ask(button.dataset.question)));
+
+function roundRect(ctx, x, y, width, height, radius) {
+  const r = Math.min(radius, width / 2, height / 2);
+  ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + width, y, x + width, y + height, r); ctx.arcTo(x + width, y + height, x, y + height, r); ctx.arcTo(x, y + height, x, y, r); ctx.arcTo(x, y, x + width, y, r); ctx.closePath();
+}
+function wrapCanvasText(ctx, text, maxWidth) {
+  const lines = []; let line = "";
+  for (const character of Array.from(text)) { const next = line + character; if (ctx.measureText(next).width > maxWidth && line) { lines.push(line); line = character; } else { line = next; } }
+  if (line) lines.push(line); return lines;
+}
+async function captureConversation() {
+  const messageNodes = [...document.querySelectorAll("#chatMessages .chat-message")];
+  const canvas = document.createElement("canvas"); const ctx = canvas.getContext("2d");
+  const width = 1080, margin = 64, maxTextWidth = 720, lineHeight = 43;
+  ctx.font = '28px "Noto Sans KR", sans-serif';
+  const messages = messageNodes.map(node => ({ role: node.dataset.role || "assistant", text: node.textContent.trim(), lines: wrapCanvasText(ctx, node.textContent.trim(), maxTextWidth) }));
+  const contentHeight = messages.reduce((sum, message) => sum + Math.max(92, message.lines.length * lineHeight + 54) + 28, 0);
+  canvas.width = width; canvas.height = Math.max(900, 270 + contentHeight + 120);
+  const bg = ctx.createLinearGradient(0, 0, width, canvas.height); bg.addColorStop(0, "#eef8fb"); bg.addColorStop(1, "#f7fafc"); ctx.fillStyle = bg; ctx.fillRect(0, 0, width, canvas.height);
+  const head = ctx.createLinearGradient(0, 0, width, 0); head.addColorStop(0, "#071b32"); head.addColorStop(1, "#0b3656"); ctx.fillStyle = head; ctx.fillRect(0, 0, width, 220);
+  ctx.fillStyle = "#48e2dc"; ctx.beginPath(); ctx.arc(90, 78, 26, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = "#ffffff"; ctx.font = '800 38px "Noto Sans KR", sans-serif'; ctx.fillText("제11회 대한민국 약사학술제", 64, 145);
+  ctx.fillStyle = "#9eeef0"; ctx.font = '700 22px "Noto Sans KR", sans-serif'; ctx.fillText("AX 학술제 Agent · 대화 기록", 130, 86);
+  ctx.fillStyle = "#a9bbca"; ctx.font = '20px "Noto Sans KR", sans-serif'; ctx.fillText("AX 시대, 약사 직능의 새로운 도약", 64, 187);
+  let y = 270;
+  for (const message of messages) {
+    ctx.font = '28px "Noto Sans KR", sans-serif';
+    const bubbleWidth = Math.min(824, Math.max(300, Math.max(...message.lines.map(line => ctx.measureText(line).width), 0) + 64));
+    const bubbleHeight = Math.max(92, message.lines.length * lineHeight + 54); const x = message.role === "user" ? width - margin - bubbleWidth : margin;
+    ctx.fillStyle = message.role === "user" ? "#0d77e8" : "#ffffff"; roundRect(ctx, x, y, bubbleWidth, bubbleHeight, 28); ctx.fill();
+    if (message.role !== "user") { ctx.strokeStyle = "#dce8ef"; ctx.lineWidth = 2; roundRect(ctx, x, y, bubbleWidth, bubbleHeight, 28); ctx.stroke(); }
+    ctx.fillStyle = message.role === "user" ? "#ffffff" : "#17324d"; message.lines.forEach((line, index) => ctx.fillText(line, x + 32, y + 46 + index * lineHeight)); y += bubbleHeight + 28;
+  }
+  ctx.fillStyle = "#60758a"; ctx.font = '18px "Noto Sans KR", sans-serif'; ctx.fillText("2026. 11. 29. SUN · 서울 양재 aT센터", margin, canvas.height - 58);
+  const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/png")); if (!blob) return;
+  const url = URL.createObjectURL(blob); const link = document.createElement("a"); link.href = url; link.download = `제11회-약사학술제-Agent-대화-${new Date().toISOString().slice(0,10)}.png`; document.body.appendChild(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+  const toast = document.getElementById("captureToast"); toast.classList.remove("opacity-0", "translate-y-2"); setTimeout(() => toast.classList.add("opacity-0", "translate-y-2"), 2200);
+}
+document.getElementById("chatCapture").addEventListener("click", captureConversation);
+
+const revealObserver = new IntersectionObserver(entries => entries.forEach(entry => entry.target.classList.toggle("is-visible", entry.isIntersecting)), { threshold: .12 });
+document.querySelectorAll(".reveal").forEach(el => revealObserver.observe(el));
+
+document.querySelectorAll("[data-filter]").forEach(button => button.addEventListener("click", () => {
+  const filter = button.dataset.filter;
+  document.querySelectorAll("[data-filter]").forEach(b => b.setAttribute("aria-pressed", b === button));
+  document.querySelectorAll(".program-row").forEach(row => row.classList.toggle("is-hidden", filter !== "all" && row.dataset.room !== filter));
+}));

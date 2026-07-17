@@ -1,0 +1,83 @@
+:root {
+  --ink: #07192f;
+  --navy: #092647;
+  --blue: #0d77e8;
+  --cyan: #38d8e8;
+  --mint: #67e8c6;
+  --mist: #f3f8fb;
+  --line: #d9e7ef;
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: "Noto Sans KR", sans-serif; color: var(--ink); background: #fff; }
+.font-display { font-family: "Manrope", "Noto Sans KR", sans-serif; }
+.text-balance { text-wrap: balance; }
+
+.site-header {
+  transition: background-color .25s ease, box-shadow .25s ease, color .25s ease;
+}
+.site-header.scrolled {
+  color: var(--ink);
+  background: rgba(255,255,255,.92);
+  box-shadow: 0 1px 0 rgba(7,25,47,.08);
+  backdrop-filter: blur(18px);
+}
+.site-header.scrolled .brand-mark { border-color: rgba(7,25,47,.12); background: var(--ink); }
+.site-header.scrolled .nav-link { color: #35506b; }
+.site-header.scrolled .nav-link:hover,
+.site-header.scrolled .nav-link[aria-current="page"] { color: var(--blue); }
+.site-header.scrolled .mobile-menu-button { color: var(--ink); border-color: rgba(7,25,47,.12); }
+
+.hero {
+  min-height: 760px;
+  background-image: linear-gradient(90deg, rgba(4,17,34,.98) 0%, rgba(4,17,34,.86) 36%, rgba(4,17,34,.24) 72%, rgba(4,17,34,.12) 100%), url("assets/hero-ai.png");
+  background-size: cover;
+  background-position: center;
+}
+.hero::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 70%, rgba(4,17,34,.72));
+  pointer-events: none;
+}
+.signal-line {
+  background: linear-gradient(90deg, var(--mint), var(--cyan), transparent);
+}
+.glass-card {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.16);
+  backdrop-filter: blur(16px);
+}
+.section-label { letter-spacing: .16em; text-transform: uppercase; }
+.soft-grid {
+  background-image: linear-gradient(rgba(13,119,232,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(13,119,232,.05) 1px, transparent 1px);
+  background-size: 42px 42px;
+}
+.room-card { transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+.room-card:hover { transform: translateY(-4px); box-shadow: 0 24px 60px rgba(7,25,47,.10); border-color: #b9d7e9; }
+.program-row { transition: background-color .2s ease, transform .2s ease; }
+.program-row:hover { background: #f8fcfe; transform: translateX(3px); }
+.program-row.is-hidden { display: none; }
+.filter-button[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+.map-frame { background: radial-gradient(circle at 76% 26%, rgba(56,216,232,.22), transparent 32%), linear-gradient(135deg, #edf7fa, #e7eff8); }
+.agent-console { background: radial-gradient(circle at 82% 12%, rgba(56,216,232,.15), transparent 32%), #071b32; }
+.agent-node { position: relative; }
+.agent-node:not(:last-child)::after { content: ""; position: absolute; left: 17px; top: 36px; width: 1px; height: 34px; background: linear-gradient(#43d9e5, rgba(67,217,229,.08)); }
+.route-line { stroke-dasharray: 8 8; animation: route 15s linear infinite; }
+@keyframes route { to { stroke-dashoffset: -160; } }
+
+.chat-panel { transform-origin: bottom right; transition: opacity .2s ease, transform .2s ease, visibility .2s; }
+.chat-panel.is-closed { opacity: 0; transform: translateY(14px) scale(.96); visibility: hidden; pointer-events: none; }
+.chat-message { animation: message-in .25s ease both; }
+@keyframes message-in { from { opacity: 0; transform: translateY(6px); } }
+
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.is-visible { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+  .reveal { opacity: 1; transform: none; }
+}
+@media (max-width: 767px) {
+  .hero { min-height: 720px; background-position: 62% center; background-image: linear-gradient(180deg, rgba(4,17,34,.74), rgba(4,17,34,.96) 72%), url("assets/hero-ai.png"); }
+  .chat-panel { width: calc(100vw - 2rem) !important; right: -.25rem !important; bottom: 5.7rem; }
+}
