@@ -127,6 +127,68 @@ document.getElementById("chatCapture").addEventListener("click", captureConversa
 const revealObserver = new IntersectionObserver(entries => entries.forEach(entry => entry.target.classList.toggle("is-visible", entry.isIntersecting)), { threshold: .12 });
 document.querySelectorAll(".reveal").forEach(el => revealObserver.observe(el));
 
+// OriginKit Snow Fall adapted for this dependency-free site.
+function initHeroSnowfall() {
+  const canvas = document.querySelector("[data-snowfall]");
+  if (!canvas || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const hero = canvas.closest(".hero");
+  const ctx = canvas.getContext("2d");
+  if (!hero || !ctx) return;
+
+  const palette = ["#67e8c6", "#38d8e8", "#a8b7ff"];
+  const dpr = Math.min(devicePixelRatio || 1, 2);
+  let width = 0, height = 0, flakes = [], frame = 0;
+  const random = (min, max) => min + Math.random() * (max - min);
+
+  function build() {
+    const rect = hero.getBoundingClientRect();
+    width = Math.max(1, Math.floor(rect.width));
+    height = Math.max(1, Math.floor(rect.height));
+    canvas.width = Math.floor(width * dpr);
+    canvas.height = Math.floor(height * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const count = width < 768 ? 74 : Math.min(175, Math.round(width * .115));
+    flakes = Array.from({ length: count }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      radius: random(.55, 2.35),
+      speed: random(.28, .92),
+      drift: random(-.12, .2),
+      phase: Math.random() * Math.PI * 2,
+      sway: random(.12, .5),
+      alpha: random(.24, .78),
+      color: palette[Math.floor(Math.random() * palette.length)]
+    }));
+  }
+
+  function animate(time) {
+    ctx.clearRect(0, 0, width, height);
+    for (const flake of flakes) {
+      flake.y += flake.speed;
+      flake.x += flake.drift + Math.sin(time * .0008 + flake.phase) * flake.sway;
+      if (flake.y - flake.radius > height) { flake.y = -flake.radius; flake.x = Math.random() * width; }
+      if (flake.x < -flake.radius) flake.x = width + flake.radius;
+      if (flake.x > width + flake.radius) flake.x = -flake.radius;
+      ctx.globalAlpha = flake.alpha;
+      ctx.fillStyle = flake.color;
+      ctx.beginPath();
+      ctx.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    frame = requestAnimationFrame(animate);
+  }
+
+  build();
+  frame = requestAnimationFrame(animate);
+  const observer = new ResizeObserver(build);
+  observer.observe(hero);
+  document.addEventListener("visibilitychange", () => {
+    cancelAnimationFrame(frame);
+    if (!document.hidden) frame = requestAnimationFrame(animate);
+  });
+}
+initHeroSnowfall();
 document.querySelectorAll("[data-filter]").forEach(button => button.addEventListener("click", () => {
   const filter = button.dataset.filter;
   document.querySelectorAll("[data-filter]").forEach(b => b.setAttribute("aria-pressed", b === button));
