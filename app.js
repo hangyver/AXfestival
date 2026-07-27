@@ -189,6 +189,149 @@ function initHeroSnowfall() {
   });
 }
 initHeroSnowfall();
+function initSloganFireworks() {
+  const canvas = document.querySelector("[data-slogan-fireworks]");
+  if (!canvas || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+
+  const colors = ["#67e8c6", "#38d8e8", "#a8b7ff", "#d7fff7"];
+  const dpr = Math.min(devicePixelRatio || 1, 2);
+  let width = 1, height = 1, frame = 0, lastTime = performance.now();
+  let rockets = [], particles = [], launchQueue = [], nextCycle = lastTime + 500;
+  const random = (min, max) => min + Math.random() * (max - min);
+
+  function resize() {
+    const rect = canvas.getBoundingClientRect();
+    width = Math.max(1, Math.floor(rect.width));
+    height = Math.max(1, Math.floor(rect.height));
+    canvas.width = Math.floor(width * dpr);
+    canvas.height = Math.floor(height * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    rockets = [];
+    particles = [];
+  }
+
+  function launch(lane) {
+    const mobile = width < 520;
+    const mobileRanges = [[.28, .48], [.46, .66], [.62, .82]];
+    const desktopRanges = [[.16, .34], [.38, .56], [.58, .76]];
+    const [targetMin, targetMax] = (mobile ? mobileRanges : desktopRanges)[lane];
+    rockets.push({
+      startX: random(width * .04, width * (mobile ? .26 : .18)),
+      startY: height + 8,
+      targetX: random(width * targetMin, width * targetMax),
+      targetY: random(height * .14, height * (mobile ? .54 : .62)),
+      duration: random(1.02, 1.35),
+      elapsed: 0,
+      color: colors[Math.floor(Math.random() * colors.length)]
+    });
+  }
+
+  function explode(x, y, baseColor) {
+    const count = width < 520 ? 44 : 72;
+    for (let i = 0; i < count; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = random(width < 520 ? 70 : 105, width < 520 ? 165 : 240);
+      particles.push({
+        x, y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        life: random(1.4, 2.05),
+        maxLife: 0,
+        size: random(1.2, 2.8),
+        color: Math.random() < .42 ? baseColor : colors[Math.floor(Math.random() * colors.length)]
+      });
+      particles[particles.length - 1].maxLife = particles[particles.length - 1].life;
+    }
+  }
+
+  function drawGlow(x, y, radius, color, alpha) {
+    const glow = ctx.createRadialGradient(x, y, 0, x, y, radius * 4);
+    glow.addColorStop(0, color);
+    glow.addColorStop(.25, color);
+    glow.addColorStop(1, "transparent");
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = glow;
+    ctx.beginPath();
+    ctx.arc(x, y, radius * 4, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  function animate(now) {
+    const dt = Math.min((now - lastTime) / 1000, .034);
+    lastTime = now;
+    ctx.clearRect(0, 0, width, height);
+    ctx.globalCompositeOperation = "lighter";
+
+    if (now >= nextCycle) {
+      const secondDelay = random(430, 620);
+      launchQueue.push(
+        { due: now, lane: 0 },
+        { due: now + secondDelay, lane: 1 },
+        { due: now + secondDelay + random(430, 620), lane: 2 }
+      );
+      nextCycle = now + random(6000, 7000);
+    }
+    while (launchQueue.length && now >= launchQueue[0].due) {
+      const queued = launchQueue.shift();
+      launch(queued.lane);
+    }
+
+    rockets = rockets.filter(rocket => {
+      rocket.elapsed += dt;
+      const progress = Math.min(rocket.elapsed / rocket.duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const x = rocket.startX + (rocket.targetX - rocket.startX) * eased;
+      const y = rocket.startY + (rocket.targetY - rocket.startY) * eased;
+      drawGlow(x, y, 2.8, rocket.color, .95);
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = "#ffffff";
+      ctx.beginPath();
+      ctx.arc(x, y, 1.7, 0, Math.PI * 2);
+      ctx.fill();
+      if (progress >= 1) {
+        explode(x, y, rocket.color);
+        return false;
+      }
+      return true;
+    });
+
+    particles = particles.filter(particle => {
+      particle.life -= dt;
+      if (particle.life <= 0) return false;
+      particle.vx *= Math.pow(.985, dt * 60);
+      particle.vy = particle.vy * Math.pow(.992, dt * 60) + 52 * dt;
+      particle.x += particle.vx * dt;
+      particle.y += particle.vy * dt;
+      const alpha = Math.pow(particle.life / particle.maxLife, 1.45);
+      drawGlow(particle.x, particle.y, particle.size, particle.color, alpha * .72);
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = particle.color;
+      ctx.beginPath();
+      ctx.arc(particle.x, particle.y, Math.max(.55, particle.size * alpha), 0, Math.PI * 2);
+      ctx.fill();
+      return true;
+    });
+
+    ctx.globalAlpha = 1;
+    ctx.globalCompositeOperation = "source-over";
+    frame = requestAnimationFrame(animate);
+  }
+
+  resize();
+  const observer = new ResizeObserver(resize);
+  observer.observe(canvas);
+  frame = requestAnimationFrame(animate);
+  document.addEventListener("visibilitychange", () => {
+    cancelAnimationFrame(frame);
+    if (!document.hidden) {
+      lastTime = performance.now();
+      frame = requestAnimationFrame(animate);
+    }
+  });
+}
+initSloganFireworks();
 document.querySelectorAll("[data-filter]").forEach(button => button.addEventListener("click", () => {
   const filter = button.dataset.filter;
   document.querySelectorAll("[data-filter]").forEach(b => b.setAttribute("aria-pressed", b === button));
