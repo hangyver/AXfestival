@@ -22,7 +22,7 @@ body { font-family: "Noto Sans KR", sans-serif; color: var(--ink); background: #
   box-shadow: 0 1px 0 rgba(7,25,47,.08);
   backdrop-filter: blur(18px);
 }
-.site-header.scrolled .brand-mark { border-color: rgba(7,25,47,.12); background: var(--ink); }
+.site-header.scrolled .brand-mark { color: #fff; border-color: rgba(7,25,47,.12); background: var(--ink); }
 .site-header.scrolled .nav-link { color: #35506b; }
 .site-header.scrolled .nav-link:hover,
 .site-header.scrolled .nav-link[aria-current="page"] { color: var(--blue); }
@@ -358,7 +358,19 @@ body { font-family: "Noto Sans KR", sans-serif; color: var(--ink); background: #
 .floor-plan-button span { display: flex; justify-content: center; gap: .45rem; margin-top: .65rem; color: #6d8192; font-size: .72rem; font-weight: 800; }
 .floor-plan-button i { color: var(--blue); font-style: normal; }
 .venue-route-section { background: #071b32; }
-.route-map { position: relative; min-height: 32rem; overflow: hidden; padding: 2rem; border: 1px solid rgba(255,255,255,.1); border-radius: 2rem; }
+.route-map { position: relative; min-height: 32rem; overflow: hidden; border: 1px solid rgba(255,255,255,.14); border-radius: 2rem; }
+.route-map-photo { display: flex; flex-direction: column; background: #edf4f5; box-shadow: 0 30px 80px rgba(0,0,0,.26); }
+.route-map-image { position: relative; display: block; flex: 1; min-height: 28rem; overflow: hidden; background: #eef5f5; cursor: zoom-in; }
+.route-map-image img { width: 100%; height: 100%; min-height: 28rem; object-fit: cover; object-position: 50% 50%; transition: transform .55s cubic-bezier(.2,.7,.2,1), filter .3s ease; }
+.route-map-image:hover img { transform: scale(1.025); filter: saturate(1.06) contrast(1.02); }
+.route-map-image::after { content: ""; position: absolute; inset: 0; border: 1px solid rgba(255,255,255,.35); border-radius: inherit; pointer-events: none; }
+.route-map-zoom { position: absolute; right: 1rem; bottom: 1rem; display: inline-flex; align-items: center; gap: .45rem; padding: .7rem .9rem; border: 1px solid rgba(255,255,255,.45); border-radius: 999px; color: #fff; background: rgba(7,27,50,.86); box-shadow: 0 12px 30px rgba(7,27,50,.26); backdrop-filter: blur(10px); font-size: .7rem; font-weight: 800; }
+.route-map-zoom i { color: var(--mint); font-style: normal; }
+.route-map-photo figcaption { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 1.2rem; color: #26445c; background: rgba(255,255,255,.96); }
+.route-walk-badge { display: inline-flex; align-items: center; gap: .35rem; font-size: .74rem; font-weight: 800; }
+.route-walk-badge b { display: grid; width: 1.75rem; height: 1.75rem; place-items: center; border-radius: 50%; color: #fff; background: linear-gradient(135deg,#ff6b62,#e83c57); font: 800 .7rem "Manrope",sans-serif; }
+.route-map-caption { color: #6d8192; font-size: .7rem; font-weight: 700; }
+.route-map-dialog { width: min(1500px,96vw); }
 .station-chip { width: fit-content; padding: .65rem 1rem; border-radius: 999px; color: #135c7a; background: rgba(255,255,255,.92); box-shadow: 0 10px 30px rgba(7,25,47,.13); font-size: .72rem; font-weight: 800; }
 .location-pin { display: grid; width: 4rem; height: 4rem; place-items: center; border: 7px solid #fff; border-radius: 50%; color: #fff; background: var(--blue); box-shadow: 0 14px 35px rgba(13,119,232,.32); }
 .location-card { width: fit-content; margin-top: .9rem; padding: 1rem 1.15rem; border-radius: 1rem; background: #fff; box-shadow: 0 16px 38px rgba(7,25,47,.18); }
@@ -392,7 +404,10 @@ body { font-family: "Noto Sans KR", sans-serif; color: var(--ink); background: #
   .floor-card-head { grid-template-columns:auto 1fr; }
   .floor-card-head b { grid-column:2; justify-self:start; }
   .floor-plan-button img { height:15rem; }
-  .route-map { min-height:26rem; padding:1.25rem; }
+  .route-map { min-height:25rem; }
+  .route-map-image,.route-map-image img { min-height:21rem; }
+  .route-map-image img { object-position:52% 50%; }
+  .route-map-photo figcaption { align-items:flex-start; flex-direction:column; gap:.45rem; }
   .venue-address-card .venue-floor-chip { font-size:.6rem; }
 }
 @media (prefers-reduced-motion: reduce) {
