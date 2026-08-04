@@ -430,3 +430,5 @@ body { font-family: "Noto Sans KR", sans-serif; color: var(--ink); background: #
 .slogan-statement em { margin-left: .18em; }
   .chat-panel { width: calc(100vw - 2rem) !important; right: -.25rem !important; bottom: 5.7rem; }
 }
+
+.program-status.is-confirmed { color: #087f5b; background: #dff8ed; }

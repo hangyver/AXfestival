@@ -1,3 +1,6 @@
+import "./festival-data.js";
+import "./agent-engine.js";
+
 const page = document.body.dataset.page;
 
 function header(active = page) {
@@ -42,8 +45,8 @@ function chatbot() {
   return `<div class="fixed bottom-5 right-5 z-50">
     <section id="chatPanel" class="chat-panel is-closed absolute bottom-[4.7rem] right-0 flex h-[570px] w-[390px] flex-col overflow-hidden rounded-[1.6rem] border border-slate-200 bg-white shadow-2xl" aria-label="AX 학술제 에이전트" aria-hidden="true">
       <div class="bg-[#071b32] px-5 py-4 text-white"><div class="flex items-center justify-between gap-3"><div class="flex min-w-0 items-center gap-3"><span class="relative grid h-10 w-10 shrink-0 place-items-center rounded-full bg-cyan-400 text-slate-900"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8V4H8M6 8h12a2 2 0 0 1 2 2v8H4v-8a2 2 0 0 1 2-2Z"/><path d="M9 13h.01M15 13h.01M9 18v2M15 18v2"/></svg><i class="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-[#071b32] bg-emerald-400"></i></span><div class="min-w-0"><strong class="block truncate text-sm">AX 학술제 Agent</strong><span class="block truncate text-xs text-slate-400">행사 지식을 연결하는 안내 에이전트</span></div></div><div class="flex shrink-0 items-center"><button id="chatCapture" class="grid h-9 w-9 place-items-center rounded-full text-slate-300 transition hover:bg-white/10 hover:text-white" aria-label="대화를 이미지로 저장" title="대화를 이미지로 저장"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 4 16 6h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3l1.5-2Z"/><circle cx="12" cy="13" r="3"/></svg></button><button id="chatClose" class="grid h-9 w-9 place-items-center rounded-full text-slate-400 transition hover:bg-white/10 hover:text-white" aria-label="에이전트 닫기">✕</button></div></div></div>
-      <div class="flex items-center justify-between border-b border-cyan-100 bg-cyan-50 px-4 py-2.5 text-[11px]"><span class="flex items-center gap-2 font-bold text-cyan-900"><i class="h-2 w-2 rounded-full bg-emerald-500"></i>기본 행사 안내 활성</span><span class="text-cyan-700">RAG 자료 연결 예정</span></div>
-      <div id="chatMessages" class="flex-1 space-y-3 overflow-y-auto bg-slate-50 p-4" aria-live="polite"><div class="chat-message max-w-[88%] rounded-2xl rounded-tl-sm bg-white p-3 text-sm leading-6 text-slate-700 shadow-sm" data-role="assistant">안녕하세요! 제11회 대한민국 약사학술제 AX Agent입니다. 현재는 행사 기본 정보를 안내하며, 강의자료가 확정되면 출처 기반 RAG 답변도 제공할 예정입니다.</div></div>
+      <div class="flex items-center justify-between border-b border-cyan-100 bg-cyan-50 px-4 py-2.5 text-[11px]"><span class="flex items-center gap-2 font-bold text-cyan-900"><i class="h-2 w-2 rounded-full bg-emerald-500"></i>기본 행사 안내 활성</span><span class="text-cyan-700">웹사이트 등록 정보 연결</span></div>
+      <div id="chatMessages" class="flex-1 space-y-3 overflow-y-auto bg-slate-50 p-4" aria-live="polite"><div class="chat-message max-w-[88%] rounded-2xl rounded-tl-sm bg-white p-3 text-sm leading-6 text-slate-700 shadow-sm" data-role="assistant">안녕하세요! 제11회 대한민국 약사학술제 AX Agent입니다. 웹사이트에 등록된 행사 일정, 강사, 강의 내용과 오시는 길을 정확하게 찾아 안내해 드립니다.</div></div>
       <div id="chatSuggestions" class="flex gap-2 overflow-x-auto border-t border-slate-100 bg-white px-4 py-3"><button class="chat-chip whitespace-nowrap rounded-full border border-slate-200 px-3 py-1.5 text-xs font-bold text-slate-600" data-question="행사 시간은?">행사 시간</button><button class="chat-chip whitespace-nowrap rounded-full border border-slate-200 px-3 py-1.5 text-xs font-bold text-slate-600" data-question="강의실은 어디야?">강의실</button><button class="chat-chip whitespace-nowrap rounded-full border border-slate-200 px-3 py-1.5 text-xs font-bold text-slate-600" data-question="지하철로 어떻게 가?">오시는 길</button></div>
       <form id="chatForm" class="flex gap-2 border-t border-slate-100 bg-white p-3"><label class="sr-only" for="chatInput">질문 입력</label><input id="chatInput" class="min-w-0 flex-1 rounded-xl bg-slate-100 px-4 py-3 text-sm outline-none ring-blue-500 focus:ring-2" placeholder="행사 정보를 물어보세요" autocomplete="off"><button class="grid h-11 w-11 place-items-center rounded-xl bg-blue-600 text-white" aria-label="질문 보내기"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></button></form>
     </section>
@@ -71,17 +74,9 @@ launcher.addEventListener("click", () => setChat(panel.classList.contains("is-cl
 document.getElementById("chatClose").addEventListener("click", () => setChat(false));
 document.querySelectorAll("[data-chat-open]").forEach(button => button.addEventListener("click", () => setChat(true)));
 
-const answers = [
-  [/시간|언제|날짜|몇 시/, "학술제는 2026년 11월 29일 일요일, 오전 10시부터 오후 6시까지 진행됩니다."],
-  [/장소|어디|주소/, "행사 장소는 서울 양재 aT센터(서울 서초구 강남대로 27)입니다. 3층 세계로룸과 4층 창조룸 Ⅰ·Ⅱ를 사용합니다."],
-  [/강의실|룸|교실/, "강의실은 총 3곳입니다. 3층 세계로룸 1개 강의실과 4층 창조룸 2개 강의실(창조룸 Ⅰ, Ⅱ)입니다."],
-  [/지하철|버스|가는 길|오시는/, "신분당선 양재시민의숲역(매헌) 4번 출구와 연결되어 있습니다. 출구에서 도보 약 2분입니다."],
-  [/강사|강의|프로그램|일정/, "강사와 강의 주제는 현재 준비 중입니다. 강의는 오전 10시부터 오후 6시까지 한 시간 단위로 편성되며, 확정되는 대로 강의 일정 페이지에 공개됩니다."],
-  [/주차/, "aT센터 주차장을 이용할 수 있으나 행사일에는 혼잡할 수 있어 대중교통 이용을 권장합니다. 주차 지원 여부는 추후 공지됩니다."],
-  [/슬로건|주제/, "올해의 슬로건은 ‘AX 시대, 약사 직능의 새로운 도약’입니다."],
-];
-function addMessage(text, mine = false) { const el = document.createElement("div"); el.className = `chat-message max-w-[88%] rounded-2xl p-3 text-sm leading-6 ${mine ? "ml-auto rounded-tr-sm bg-blue-600 text-white" : "rounded-tl-sm bg-white text-slate-700 shadow-sm"}`; el.dataset.role = mine ? "user" : "assistant"; el.textContent = text; const box = document.getElementById("chatMessages"); box.appendChild(el); box.scrollTop = box.scrollHeight; }
-function ask(q) { if (!q.trim()) return; addMessage(q, true); setTimeout(() => { const found = answers.find(([pattern]) => pattern.test(q)); addMessage(found ? found[1] : "아직 확정되지 않은 내용이거나 제가 안내하기 어려운 질문이에요. 행사 시간, 장소, 강의실, 교통편을 물어보시면 바로 안내해 드릴게요."); }, 350); }
+const answerQuestion = window.FESTIVAL_AGENT.answer;
+function addMessage(text, mine = false) { const el = document.createElement("div"); el.className = `chat-message max-w-[88%] whitespace-pre-line rounded-2xl p-3 text-sm leading-6 ${mine ? "ml-auto rounded-tr-sm bg-blue-600 text-white" : "rounded-tl-sm bg-white text-slate-700 shadow-sm"}`; el.dataset.role = mine ? "user" : "assistant"; el.textContent = text; const box = document.getElementById("chatMessages"); box.appendChild(el); box.scrollTop = box.scrollHeight; }
+function ask(q) { if (!q.trim()) return; addMessage(q, true); setTimeout(() => addMessage(answerQuestion(q)), 220); }
 document.getElementById("chatForm").addEventListener("submit", e => { e.preventDefault(); const q = input.value; input.value = ""; ask(q); });
 document.querySelectorAll(".chat-chip").forEach(button => button.addEventListener("click", () => ask(button.dataset.question)));
 
@@ -337,3 +332,14 @@ document.querySelectorAll("[data-filter]").forEach(button => button.addEventList
   document.querySelectorAll("[data-filter]").forEach(b => b.setAttribute("aria-pressed", b === button));
   document.querySelectorAll(".program-row").forEach(row => row.classList.toggle("is-hidden", filter !== "all" && row.dataset.room !== filter));
 }));
+
+const programList = document.getElementById("programList");
+if (programList) {
+  const programData = window.FESTIVAL_DATA;
+  programList.innerHTML = programData.sessions.map(session => {
+    const room = programData.rooms.find(item => item.id === session.roomId);
+    const details = [session.speaker, session.description].filter(Boolean).join(" · ");
+    const confirmed = session.status !== "편성 중";
+    return `<article class="program-row" data-room="${room.id}"><time><strong>${session.start}</strong><span>— ${session.end}</span></time><div><span class="inline-flex rounded-full px-3 py-1.5 text-xs font-extrabold ${room.labelClass}">${room.floor} · ${room.name}</span></div><div class="program-session"><h3>${session.title}</h3><p>${details || "세부 내용 등록 예정"}</p></div><span class="program-status${confirmed ? " is-confirmed" : ""}">${session.status}</span></article>`;
+  }).join("");
+}
