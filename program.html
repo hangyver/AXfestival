@@ -16,8 +16,4 @@
     </div>
     <div class="program-notice"><div class="program-notice-icon">i</div><div><strong>일정 안내</strong><p>강의 주제와 강사는 현재 섭외 및 편성 중입니다. 세부 일정은 확정 후 공개되며 운영 상황에 따라 일부 변경될 수 있습니다.</p></div></div>
   </div></section>
-</main><div data-footer></div><script src="app.js"></script><script>
-const rooms=[['world','3F','세계로룸','room-label-world'],['creation1','4F','창조룸 Ⅰ','room-label-creation1'],['creation2','4F','창조룸 Ⅱ','room-label-creation2']];
-const times=Array.from({length:8},(_,i)=>`${String(10+i).padStart(2,'0')}:00`);
-document.getElementById('programList').innerHTML=times.flatMap((time,i)=>rooms.map(([id,floor,room,color])=>`<article class="program-row" data-room="${id}"><time><strong>${time}</strong><span>— ${String(11+i).padStart(2,'0')}:00</span></time><div><span class="inline-flex rounded-full px-3 py-1.5 text-xs font-extrabold ${color}">${floor} · ${room}</span></div><div class="program-session"><h3>강의 주제 추후 공개</h3><p>강사 섭외 중 · 자료 연결 예정</p></div><span class="program-status">편성 중</span></article>`)).join('');
-</script></body></html>
+</main><div data-footer></div><script type="module" src="app.js"></script></body></html>
