@@ -6,7 +6,7 @@
   const formatSession = session => {
     const room = roomFor(session);
     const description = session.description ? ` ${session.description}` : "";
-    return `${session.start}–${session.end}, ${room.floor} ${room.name}: ‘${session.title}’ (${session.speaker}).${description}`;
+    return `${session.start}–${session.end}, ${room.floor} ${room.name}: ‘${session.title}’ (${session.speaker}) · ${session.status}.${description}`;
   };
   function requestedTime(question) {
     const colon = question.match(/(오전|오후)?\s*(\d{1,2}):(\d{2})/);
@@ -21,8 +21,9 @@
     return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
   }
   function requestedRoom(question) {
-    const q = normalize(question);
-    return festival.rooms.find(room => [room.name, ...(room.aliases || [])].some(name => q.includes(normalize(name)))) || null;
+    const compactQuestion = String(question).replace(/\s/g, "");
+    const normalizedQuestion = normalize(question);
+    return festival.rooms.find(room => compactQuestion.includes(room.name.replace(/\s/g, "")) || (room.aliases || []).some(alias => normalizedQuestion.includes(normalize(alias)))) || null;
   }
   function findSessionMatches(question) {
     const normalizedQuestion = normalize(question);
@@ -30,7 +31,7 @@
     const tokens = question.split(/[\s,?!.]+/).map(normalize).filter(token => token.length >= 2 && !stopWords.includes(token));
     return registered().filter(session => {
       const searchable = normalize([session.title, session.speaker, session.description, ...(session.category || [])].join(" "));
-      return tokens.some(token => searchable.includes(token)) || searchable.includes(normalizedQuestion);
+      return (tokens.length > 1 ? tokens.every(token => searchable.includes(token)) : tokens.some(token => searchable.includes(token))) || searchable.includes(normalizedQuestion);
     });
   }
   function answer(question) {
@@ -40,13 +41,13 @@
     const confirmed = registered();
 
     if (/슬로건/.test(question) || (/학술제|행사/.test(question) && /주제/.test(question))) return `올해의 슬로건은 ‘${festival.event.slogan}’입니다.`;
-    if (/날짜|언제|행사시간|몇시부터|몇시까지/.test(q)) return `학술제는 ${festival.event.dateLabel}, 오전 ${festival.event.startTime}부터 오후 6시까지 진행됩니다.`;
+    if (/날짜|언제|행사시간|몇시부터|몇시까지/.test(q)) return `학술제는 ${festival.event.dateLabel}, 오전 ${festival.event.startTime}부터 오후 5시까지 진행됩니다.`;
     if (/지하철|전철|역|출구|가는길|오시는길/.test(q)) return `${festival.venue.subway}를 이용하세요. ${festival.venue.walk}이며 주소는 ${festival.venue.address}입니다.`;
     if (/주차/.test(q)) return festival.venue.parking;
     if (/장소|주소|어디서|행사장/.test(q) && !room) return `행사 장소는 ${festival.venue.name}(${festival.venue.address})입니다. 3층 세계로룸과 4층 창조룸 Ⅰ·Ⅱ를 사용합니다.`;
 
     if (time) {
-      let sessions = festival.sessions.filter(session => session.start === time);
+      let sessions = festival.sessions.filter(session => session.start <= time && session.end > time);
       if (room) sessions = sessions.filter(session => session.roomId === room.id);
       const ready = sessions.filter(session => session.status !== "편성 중");
       if (ready.length) return `${time} 강의 안내입니다.\n${ready.map(formatSession).join("\n")}`;

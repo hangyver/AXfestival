@@ -432,3 +432,17 @@ body { font-family: "Noto Sans KR", sans-serif; color: var(--ink); background: #
 }
 
 .program-status.is-confirmed { color: #087f5b; background: #dff8ed; }
+
+.program-track-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.8rem; margin:1rem 0 1.15rem; }
+.program-track-card { min-height:7.4rem; padding:1.15rem 1.2rem; border:1px solid transparent; border-radius:1.35rem; transition:transform .2s ease,box-shadow .2s ease; }
+.program-track-card:hover { transform:translateY(-2px); box-shadow:0 14px 30px rgba(7,25,47,.08); }
+.program-track-card.is-hidden { display:none; }
+.program-track-card div { display:flex; align-items:center; justify-content:space-between; gap:.75rem; }
+.program-track-card span { font-size:.7rem; font-weight:900; letter-spacing:.08em; }
+.program-track-card small { font-size:.65rem; font-weight:800; opacity:.68; }
+.program-track-card strong { display:block; margin-top:.75rem; font-size:.88rem; line-height:1.55; }
+.program-track-world { color:#713f12; border-color:#fde68a; background:linear-gradient(145deg,#fffbeb,#fef3c7); }
+.program-track-creation1 { color:#9d174d; border-color:#fbcfe8; background:linear-gradient(145deg,#fff1f7,#fce7f3); }
+.program-track-creation2 { color:#9d174d; border-color:#f9a8d4; background:linear-gradient(145deg,#fdf2f8,#fbcfe8); }
+.program-status.is-draft { color:#9a5b08; background:#fff3cd; }
+@media (max-width: 767px) { .program-track-grid { grid-template-columns:1fr; } .program-track-card { min-height:auto; } }

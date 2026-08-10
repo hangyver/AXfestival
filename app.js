@@ -330,16 +330,21 @@ initSloganFireworks();
 document.querySelectorAll("[data-filter]").forEach(button => button.addEventListener("click", () => {
   const filter = button.dataset.filter;
   document.querySelectorAll("[data-filter]").forEach(b => b.setAttribute("aria-pressed", b === button));
-  document.querySelectorAll(".program-row").forEach(row => row.classList.toggle("is-hidden", filter !== "all" && row.dataset.room !== filter));
+  document.querySelectorAll(".program-row, .program-track-card").forEach(item => item.classList.toggle("is-hidden", filter !== "all" && item.dataset.room !== filter));
 }));
 
 const programList = document.getElementById("programList");
 if (programList) {
   const programData = window.FESTIVAL_DATA;
-  programList.innerHTML = programData.sessions.map(session => {
+  const roomOrder = new Map(programData.rooms.map((room, index) => [room.id, index]));
+  const orderedSessions = [...programData.sessions].sort((a, b) => a.start.localeCompare(b.start) || roomOrder.get(a.roomId) - roomOrder.get(b.roomId));
+  programList.innerHTML = orderedSessions.map(session => {
     const room = programData.rooms.find(item => item.id === session.roomId);
     const details = [session.speaker, session.description].filter(Boolean).join(" · ");
-    const confirmed = session.status !== "편성 중";
-    return `<article class="program-row" data-room="${room.id}"><time><strong>${session.start}</strong><span>— ${session.end}</span></time><div><span class="inline-flex rounded-full px-3 py-1.5 text-xs font-extrabold ${room.labelClass}">${room.floor} · ${room.name}</span></div><div class="program-session"><h3>${session.title}</h3><p>${details || "세부 내용 등록 예정"}</p></div><span class="program-status${confirmed ? " is-confirmed" : ""}">${session.status}</span></article>`;
+    const statusClass = session.status === "확정" ? " is-confirmed" : session.status === "편성안" ? " is-draft" : "";
+    return `<article class="program-row" data-room="${room.id}"><time><strong>${session.start}</strong><span>— ${session.end}</span></time><div><span class="inline-flex rounded-full px-3 py-1.5 text-xs font-extrabold ${room.labelClass}">${room.floor} · ${room.name}</span></div><div class="program-session"><h3>${session.title}</h3><p>${details || "세부 내용 등록 예정"}</p></div><span class="program-status${statusClass}">${session.status}</span></article>`;
   }).join("");
+
+  const trackList = document.getElementById("programTracks");
+  if (trackList) trackList.innerHTML = programData.rooms.map(room => `<article class="program-track-card program-track-${room.id}" data-room="${room.id}"><div><span>${room.floor} · ${room.name}</span></div><strong>${room.track}</strong></article>`).join("");
 }
