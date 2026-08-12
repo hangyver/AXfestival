@@ -11,6 +11,13 @@ npm install
 npm run dev
 ```
 
+## 배포 빌드
+
+- Cloudflare Pages: `npm run build` 실행 후 출력 폴더를 `dist`로 사용합니다.
+- OpenAI Sites: `npm run build:sites`로 Sites 전용 `dist/client` 및 `dist/server` 구조를 생성합니다.
+
+GitHub와 연동된 Cloudflare Pages는 기본 `npm run build`를 사용하므로 Sites 배포 구조의 영향을 받지 않습니다.
+
 ## 페이지
 
 - `index.html`: 행사 소개와 핵심 정보
