@@ -44,7 +44,7 @@ function footer() {
 function chatbot() {
   return `<div class="fixed bottom-5 right-5 z-50">
     <section id="chatPanel" class="chat-panel is-closed absolute bottom-[4.7rem] right-0 flex h-[570px] w-[390px] flex-col overflow-hidden rounded-[1.6rem] border border-slate-200 bg-white shadow-2xl" aria-label="AX 학술제 에이전트" aria-hidden="true">
-      <div class="bg-[#071b32] px-5 py-4 text-white"><div class="flex items-center justify-between gap-3"><div class="flex min-w-0 items-center gap-3"><span class="relative grid h-10 w-10 shrink-0 place-items-center rounded-full bg-cyan-400 text-slate-900"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8V4H8M6 8h12a2 2 0 0 1 2 2v8H4v-8a2 2 0 0 1 2-2Z"/><path d="M9 13h.01M15 13h.01M9 18v2M15 18v2"/></svg><i class="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-[#071b32] bg-emerald-400"></i></span><div class="min-w-0"><strong class="block truncate text-sm">AX 학술제 Agent</strong><span class="block truncate text-xs text-slate-400">행사 지식을 연결하는 안내 에이전트</span></div></div><div class="flex shrink-0 items-center"><button id="chatCapture" class="grid h-9 w-9 place-items-center rounded-full text-slate-300 transition hover:bg-white/10 hover:text-white" aria-label="대화를 이미지로 저장" title="대화를 이미지로 저장"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 4 16 6h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3l1.5-2Z"/><circle cx="12" cy="13" r="3"/></svg></button><button id="chatClose" class="grid h-9 w-9 place-items-center rounded-full text-slate-400 transition hover:bg-white/10 hover:text-white" aria-label="에이전트 닫기">✕</button></div></div></div>
+      <div class="bg-[#071b32] px-5 py-4 text-white"><div class="flex items-center justify-between gap-3"><div class="flex min-w-0 items-center gap-3"><span class="relative grid h-10 w-10 shrink-0 place-items-center rounded-full bg-cyan-400 text-slate-900"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8V4H8M6 8h12a2 2 0 0 1 2 2v8H4v-8a2 2 0 0 1 2-2Z"/><path d="M9 13h.01M15 13h.01M9 18v2M15 18v2"/></svg><i class="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-[#071b32] bg-emerald-400"></i></span><div class="min-w-0"><strong class="block truncate text-sm">AX 학술제 Agent</strong><span class="block truncate text-xs text-slate-400">행사 지식을 연결하는 안내 에이전트</span></div></div><div class="flex shrink-0 items-center"><button id="chatCapture" class="grid h-9 w-9 place-items-center rounded-full text-slate-300 transition hover:bg-white/10 hover:text-white" aria-label="대화를 이미지로 저장 또는 공유" title="대화를 이미지로 저장 또는 공유"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 4 16 6h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3l1.5-2Z"/><circle cx="12" cy="13" r="3"/></svg></button><button id="chatClose" class="grid h-9 w-9 place-items-center rounded-full text-slate-400 transition hover:bg-white/10 hover:text-white" aria-label="에이전트 닫기">✕</button></div></div></div>
       <div class="flex items-center justify-between border-b border-cyan-100 bg-cyan-50 px-4 py-2.5 text-[11px]"><span class="flex items-center gap-2 font-bold text-cyan-900"><i class="h-2 w-2 rounded-full bg-emerald-500"></i>기본 행사 안내 활성</span><span class="text-cyan-700">웹사이트 등록 정보 연결</span></div>
       <div id="chatMessages" class="flex-1 space-y-3 overflow-y-auto bg-slate-50 p-4" aria-live="polite"><div class="chat-message max-w-[88%] rounded-2xl rounded-tl-sm bg-white p-3 text-sm leading-6 text-slate-700 shadow-sm" data-role="assistant">안녕하세요! 제11회 대한민국 약사학술제 AX Agent입니다. 웹사이트에 등록된 행사 일정, 강사, 강의 내용과 오시는 길을 정확하게 찾아 안내해 드립니다.</div></div>
       <div id="chatSuggestions" class="flex gap-2 overflow-x-auto border-t border-slate-100 bg-white px-4 py-3"><button class="chat-chip whitespace-nowrap rounded-full border border-slate-200 px-3 py-1.5 text-xs font-bold text-slate-600" data-question="행사 시간은?">행사 시간</button><button class="chat-chip whitespace-nowrap rounded-full border border-slate-200 px-3 py-1.5 text-xs font-bold text-slate-600" data-question="강의실은 어디야?">강의실</button><button class="chat-chip whitespace-nowrap rounded-full border border-slate-200 px-3 py-1.5 text-xs font-bold text-slate-600" data-question="지하철로 어떻게 가?">오시는 길</button></div>
@@ -114,8 +114,31 @@ async function captureConversation() {
   }
   ctx.fillStyle = "#60758a"; ctx.font = '18px "Noto Sans KR", sans-serif'; ctx.fillText("2026. 11. 29. SUN · 서울 양재 aT센터", margin, canvas.height - 58);
   const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/png")); if (!blob) return;
-  const url = URL.createObjectURL(blob); const link = document.createElement("a"); link.href = url; link.download = `제11회-약사학술제-Agent-대화-${new Date().toISOString().slice(0,10)}.png`; document.body.appendChild(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
-  const toast = document.getElementById("captureToast"); toast.classList.remove("opacity-0", "translate-y-2"); setTimeout(() => toast.classList.add("opacity-0", "translate-y-2"), 2200);
+  const filename = `제11회-약사학술제-Agent-대화-${new Date().toISOString().slice(0,10)}.png`;
+  const toast = document.getElementById("captureToast");
+  const showCaptureToast = message => {
+    toast.textContent = message;
+    toast.classList.remove("opacity-0", "translate-y-2");
+    setTimeout(() => toast.classList.add("opacity-0", "translate-y-2"), 2600);
+  };
+  const imageFile = new File([blob], filename, { type: "image/png" });
+
+  if (navigator.share && navigator.canShare?.({ files: [imageFile] })) {
+    try {
+      await navigator.share({
+        files: [imageFile],
+        title: "AX 학술제 Agent 대화 기록",
+        text: "제11회 대한민국 약사학술제 AX Agent 대화 이미지"
+      });
+      showCaptureToast("이미지 저장·공유 메뉴로 전송했습니다");
+      return;
+    } catch (error) {
+      if (error.name === "AbortError") return;
+    }
+  }
+
+  const url = URL.createObjectURL(blob); const link = document.createElement("a"); link.href = url; link.download = filename; document.body.appendChild(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+  showCaptureToast("대화 이미지를 다운로드 폴더에 저장했습니다");
 }
 document.getElementById("chatCapture").addEventListener("click", captureConversation);
 
