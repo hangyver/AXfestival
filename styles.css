@@ -165,9 +165,9 @@ body { font-family: "Noto Sans KR", sans-serif; color: var(--ink); background: #
 .room-card-creation2 .room-card-label { color: #fff; background: linear-gradient(135deg,#ec4899,#be185d); border-color: #be185d; box-shadow: 0 5px 14px rgba(190,24,93,.16); }
 .room-card h3, .room-card p { position: relative; z-index: 1; }
 .room-card:hover { transform: translateY(-5px); box-shadow: 0 24px 60px rgba(7,25,47,.11); }
-.program-row { transition: background-color .2s ease, transform .2s ease; }
-.program-row:hover { background: #f8fcfe; transform: translateX(3px); }
-.program-row.is-hidden { display: none; }
+.program-session-card.is-hidden,
+.program-track-card.is-hidden,
+.program-hour-group.is-hidden { display: none; }
 .filter-button[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
 .map-frame { background: radial-gradient(circle at 76% 26%, rgba(56,216,232,.22), transparent 32%), linear-gradient(135deg, #edf7fa, #e7eff8); }
 .agent-console { background: radial-gradient(circle at 82% 12%, rgba(56,216,232,.15), transparent 32%), #071b32; }
@@ -299,40 +299,70 @@ body { font-family: "Noto Sans KR", sans-serif; color: var(--ink); background: #
   background: rgba(255,255,255,.92);
   box-shadow: 0 24px 70px rgba(7,25,47,.08);
 }
-.program-board-head,
-.program-row { display: grid; grid-template-columns: 115px 165px minmax(0,1fr) 80px; align-items: center; }
 .program-board-head {
-  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.4rem;
   border-bottom: 1px solid #dce8ef;
   color: #71869a;
   background: linear-gradient(90deg, #eef6fa, #f8fbfc);
-  font-size: .68rem;
+  font-size: .72rem;
   font-weight: 800;
-  letter-spacing: .11em;
 }
-.program-row {
+.program-board-head span { color: var(--blue); font: 800 .68rem "Manrope", sans-serif; letter-spacing: .14em; }
+.program-board-head strong { color: #60778b; font-weight: 700; }
+.program-hour-group {
+  display: grid;
+  grid-template-columns: 7.4rem minmax(0,1fr);
+  gap: 1.15rem;
+  padding: 1.25rem 1.35rem;
+  border-bottom: 1px solid #e5edf2;
+  background: linear-gradient(90deg,rgba(241,248,251,.72),rgba(255,255,255,.96) 17%);
+}
+.program-hour-group:last-child { border-bottom: 0; }
+.program-time-rail {
   position: relative;
-  gap: 1rem;
-  padding: 1.05rem 1.5rem 1.05rem 1.7rem;
-  border-bottom: 1px solid #edf2f5;
-  transition: background-color .2s ease, transform .2s ease;
+  align-self: stretch;
+  padding: .35rem 1rem .35rem .25rem;
+  border-right: 1px solid #d7e5ec;
 }
-.program-row::before { content: ""; position: absolute; inset: .55rem auto .55rem .5rem; width: 3px; border-radius: 999px; }
-.program-row[data-room="world"]::before { background: #facc15; }
-.program-row[data-room="creation1"]::before { background: #f9a8d4; }
-.program-row[data-room="creation2"]::before { background: #db2777; }
-.program-row:last-child { border-bottom: 0; }
-.program-row:hover { z-index: 1; background: #f8fcfe; transform: translateX(3px); }
-.program-row time strong { display: block; font: 800 1.08rem "Manrope", sans-serif; }
-.program-row time span { display: block; margin-top: .15rem; color: #91a1af; font-size: .7rem; }
+.program-time-rail::after { content:""; position:absolute; top:.55rem; right:-.3rem; width:.55rem; height:.55rem; border:2px solid #fff; border-radius:50%; background:var(--blue); box-shadow:0 0 0 3px rgba(13,119,232,.12); }
+.program-time-rail span { display:block; color:#9aabba; font:800 .6rem "Manrope",sans-serif; letter-spacing:.14em; }
+.program-time-rail strong { display:block; margin-top:.2rem; color:#122f49; font:800 1.2rem "Manrope",sans-serif; }
+.program-session-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.8rem; }
+#programList[data-filter]:not([data-filter="all"]) .program-session-grid { grid-template-columns:minmax(0,1fr); }
+.program-session-card {
+  position: relative;
+  display: flex;
+  min-height: 9.5rem;
+  flex-direction: column;
+  padding: 1rem;
+  overflow: hidden;
+  border: 1px solid #e0e9ee;
+  border-radius: 1.15rem;
+  background: #fff;
+  box-shadow: 0 7px 22px rgba(7,25,47,.045);
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.program-session-card::before { content:""; position:absolute; inset:0 auto 0 0; width:4px; }
+.program-session-card[data-room="world"]::before { background:#facc15; }
+.program-session-card[data-room="creation1"]::before { background:#f9a8d4; }
+.program-session-card[data-room="creation2"]::before { background:#db2777; }
+.program-session-card:hover { z-index:1; transform:translateY(-3px); border-color:#c9dce6; box-shadow:0 14px 32px rgba(7,25,47,.09); }
+.program-card-top { display:flex; align-items:center; justify-content:space-between; gap:.55rem; }
+.program-room-label { display:inline-flex; width:fit-content; padding:.38rem .62rem; border-radius:999px; font-size:.66rem; font-weight:800; white-space:nowrap; }
+.program-duration { color:#91a2af; font:700 .62rem "Manrope",sans-serif; white-space:nowrap; }
+.program-session-card .program-session { margin-top:1rem; }
+.program-session-card .program-status { align-self:flex-end; margin-top:auto; }
 .room-label-world,
 .room-label-creation1,
 .room-label-creation2 { border: 1px solid transparent; box-shadow: inset 0 1px 0 rgba(255,255,255,.55); }
 .room-label-world { color: #713f12; background: linear-gradient(135deg,#fef08a,#fde047); border-color: #facc15; }
 .room-label-creation1 { color: #9d174d; background: linear-gradient(135deg,#fce7f3,#fbcfe8); border-color: #f9a8d4; }
 .room-label-creation2 { color: #fff; background: linear-gradient(135deg,#ec4899,#be185d); border-color: #be185d; box-shadow: 0 5px 14px rgba(190,24,93,.18), inset 0 1px 0 rgba(255,255,255,.25); }
-.program-session h3 { color: #253e56; font-size: .9rem; font-weight: 800; }
-.program-session p { margin-top: .2rem; color: #93a2af; font-size: .75rem; }
+.program-session h3 { color: #253e56; font-size: .92rem; font-weight: 800; line-height:1.5; }
+.program-session p { margin-top: .35rem; color: #8293a1; font-size: .72rem; line-height:1.55; }
 .program-status { justify-self: end; padding: .38rem .65rem; border-radius: 999px; color: #60758a; background: #eef3f6; font-size: .68rem; font-weight: 800; }
 .program-notice { display: flex; gap: 1rem; margin-top: 1.25rem; padding: 1.2rem 1.3rem; border: 1px solid #cfe5ef; border-radius: 1.25rem; color: #31536b; background: linear-gradient(110deg,#eef9fb,#f5fbff); }
 .program-notice-icon { display: grid; width: 2rem; height: 2rem; flex: none; place-items: center; border-radius: 50%; color: #fff; background: var(--blue); font: 800 .8rem "Manrope",sans-serif; }
@@ -397,10 +427,13 @@ body { font-family: "Noto Sans KR", sans-serif; color: var(--ink); background: #
   .subpage-date-card { padding:1.25rem; }
   .program-filter-bar { flex-wrap:nowrap; overflow-x:auto; padding:.6rem; }
   .program-filter-bar .filter-button { flex:none; }
-  .program-board-head { display:none; }
-  .program-row { grid-template-columns: 5.3rem 1fr auto; gap:.7rem; padding:1rem 1rem 1rem 1.35rem; }
-  .program-row .program-session { grid-column:2 / -1; }
-  .program-status { grid-column:3; grid-row:1; }
+  .program-board-head { align-items:flex-start; flex-direction:column; gap:.25rem; }
+  .program-hour-group { grid-template-columns:1fr; gap:.75rem; padding:1rem; background:#fff; }
+  .program-time-rail { display:flex; align-items:center; gap:.6rem; padding:0 0 .65rem; border-right:0; border-bottom:1px solid #dce8ef; }
+  .program-time-rail::after { top:auto; right:auto; bottom:-.31rem; left:0; }
+  .program-time-rail strong { margin-top:0; font-size:1.05rem; }
+  .program-session-grid { grid-template-columns:1fr; }
+  .program-session-card { min-height:8.6rem; }
   .floor-card-head { grid-template-columns:auto 1fr; }
   .floor-card-head b { grid-column:2; justify-self:start; }
   .floor-plan-button img { height:15rem; }

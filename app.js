@@ -327,22 +327,48 @@ function initSloganFireworks() {
   });
 }
 initSloganFireworks();
-document.querySelectorAll("[data-filter]").forEach(button => button.addEventListener("click", () => {
-  const filter = button.dataset.filter;
-  document.querySelectorAll("[data-filter]").forEach(b => b.setAttribute("aria-pressed", b === button));
-  document.querySelectorAll(".program-row, .program-track-card").forEach(item => item.classList.toggle("is-hidden", filter !== "all" && item.dataset.room !== filter));
-}));
+const applyProgramFilter = filter => {
+  const programList = document.getElementById("programList");
+  if (programList) programList.dataset.filter = filter;
+  document.querySelectorAll("[data-filter]").forEach(button => button.setAttribute("aria-pressed", button.dataset.filter === filter));
+  document.querySelectorAll(".program-session-card, .program-track-card").forEach(item => {
+    item.classList.toggle("is-hidden", filter !== "all" && item.dataset.room !== filter);
+  });
+  document.querySelectorAll(".program-hour-group").forEach(group => {
+    group.classList.toggle("is-hidden", !group.querySelector(".program-session-card:not(.is-hidden)"));
+  });
+};
+
+document.querySelectorAll("[data-filter]").forEach(button => button.addEventListener("click", () => applyProgramFilter(button.dataset.filter)));
 
 const programList = document.getElementById("programList");
 if (programList) {
   const programData = window.FESTIVAL_DATA;
   const roomOrder = new Map(programData.rooms.map((room, index) => [room.id, index]));
   const orderedSessions = [...programData.sessions].sort((a, b) => a.start.localeCompare(b.start) || roomOrder.get(a.roomId) - roomOrder.get(b.roomId));
-  programList.innerHTML = orderedSessions.map(session => {
-    const room = programData.rooms.find(item => item.id === session.roomId);
-    const details = [session.speaker, session.description].filter(Boolean).join(" · ");
-    const statusClass = session.status === "확정" ? " is-confirmed" : session.status === "편성안" ? " is-draft" : "";
-    return `<article class="program-row" data-room="${room.id}"><time><strong>${session.start}</strong><span>— ${session.end}</span></time><div><span class="inline-flex rounded-full px-3 py-1.5 text-xs font-extrabold ${room.labelClass}">${room.floor} · ${room.name}</span></div><div class="program-session"><h3>${session.title}</h3><p>${details || "세부 내용 등록 예정"}</p></div><span class="program-status${statusClass}">${session.status}</span></article>`;
+  const groupedSessions = orderedSessions.reduce((groups, session) => {
+    if (!groups.has(session.start)) groups.set(session.start, []);
+    groups.get(session.start).push(session);
+    return groups;
+  }, new Map());
+
+  programList.innerHTML = [...groupedSessions].map(([start, sessions]) => {
+    const cards = sessions.map(session => {
+      const room = programData.rooms.find(item => item.id === session.roomId);
+      const details = [session.speaker, session.description].filter(Boolean).join(" · ");
+      const statusClass = session.status === "확정" ? " is-confirmed" : session.status === "편성안" ? " is-draft" : "";
+      const duration = Number(session.end.slice(0, 2)) - Number(session.start.slice(0, 2));
+      const durationLabel = duration > 1 ? `${duration}시간 프로그램` : `${session.start}–${session.end}`;
+      return `<article class="program-session-card" data-room="${room.id}">
+        <div class="program-card-top"><span class="program-room-label ${room.labelClass}">${room.floor} · ${room.name}</span><span class="program-duration">${durationLabel}</span></div>
+        <div class="program-session"><h3>${session.title}</h3><p>${details || "세부 내용 등록 예정"}</p></div>
+        <span class="program-status${statusClass}">${session.status}</span>
+      </article>`;
+    }).join("");
+    return `<section class="program-hour-group" data-time="${start}">
+      <div class="program-time-rail"><span>TIME</span><strong>${start}</strong></div>
+      <div class="program-session-grid">${cards}</div>
+    </section>`;
   }).join("");
 
   const trackList = document.getElementById("programTracks");
