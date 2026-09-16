@@ -466,6 +466,20 @@ body { font-family: "Noto Sans KR", sans-serif; color: var(--ink); background: #
 
 .program-status.is-confirmed { color: #087f5b; background: #dff8ed; }
 
+/* Festival film — a restrained cinema frame for the official promotional video. */
+.festival-film-section { overflow:hidden; }
+.festival-film-shell { position:relative; padding:clamp(1rem,2.6vw,2rem); overflow:hidden; border-radius:clamp(1.6rem,3vw,2.6rem); color:#fff; background:radial-gradient(circle at 92% 4%,rgba(44,212,232,.18),transparent 26%),linear-gradient(145deg,#06182d,#0a2945); box-shadow:0 30px 80px rgba(7,27,50,.2); }
+.festival-film-shell::before { content:""; position:absolute; inset:0; border:1px solid rgba(255,255,255,.12); border-radius:inherit; pointer-events:none; }
+.festival-film-heading { position:relative; z-index:1; display:flex; align-items:end; justify-content:space-between; gap:2rem; padding:clamp(.6rem,1.8vw,1.35rem) clamp(.45rem,1.3vw,1rem) clamp(1.4rem,2.5vw,2.2rem); }
+.festival-film-kicker { display:flex; align-items:center; gap:.65rem; color:#67e8f9; font:800 .68rem "Manrope",sans-serif; letter-spacing:.2em; }
+.festival-film-kicker span { display:block; width:2.3rem; height:1px; background:linear-gradient(90deg,#67e8f9,transparent); }
+.festival-film-heading h2 { margin-top:.8rem; font-size:clamp(2rem,4.6vw,4.2rem); font-weight:800; line-height:1.04; letter-spacing:-.05em; }
+.festival-film-heading > p { max-width:24rem; padding-bottom:.25rem; color:#a9bdcd; font-size:.88rem; line-height:1.7; }
+.festival-film-frame { position:relative; z-index:1; overflow:hidden; border:1px solid rgba(255,255,255,.17); border-radius:clamp(1rem,2vw,1.7rem); background:#020810; box-shadow:0 22px 55px rgba(0,0,0,.38); }
+.festival-film-frame::after { content:""; position:absolute; inset:0; border-radius:inherit; box-shadow:inset 0 0 0 1px rgba(255,255,255,.05); pointer-events:none; }
+.festival-film-video { display:block; width:100%; aspect-ratio:16/9; object-fit:cover; background:#020810; }
+.festival-film-video:focus-visible { outline:3px solid #67e8f9; outline-offset:-5px; }
+
 .program-track-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.8rem; margin:1rem 0 1.15rem; }
 .program-track-card { min-height:7.4rem; padding:1.15rem 1.2rem; border:1px solid transparent; border-radius:1.35rem; transition:transform .2s ease,box-shadow .2s ease; }
 .program-track-card:hover { transform:translateY(-2px); box-shadow:0 14px 30px rgba(7,25,47,.08); }
@@ -479,3 +493,9 @@ body { font-family: "Noto Sans KR", sans-serif; color: var(--ink); background: #
 .program-track-creation2 { color:#9d174d; border-color:#f9a8d4; background:linear-gradient(145deg,#fdf2f8,#fbcfe8); }
 .program-status.is-draft { color:#9a5b08; background:#fff3cd; }
 @media (max-width: 767px) { .program-track-grid { grid-template-columns:1fr; } .program-track-card { min-height:auto; } }
+@media (max-width: 767px) {
+  .festival-film-shell { padding:.8rem; }
+  .festival-film-heading { align-items:flex-start; flex-direction:column; gap:.75rem; padding:1rem .55rem 1.35rem; }
+  .festival-film-heading > p { font-size:.78rem; }
+  .festival-film-frame { border-radius:1rem; }
+}
