@@ -350,6 +350,16 @@ function initSloganFireworks() {
   });
 }
 initSloganFireworks();
+
+const festivalFilm = document.querySelector(".festival-film-video");
+if (festivalFilm) {
+  festivalFilm.muted = true;
+  festivalFilm.defaultMuted = true;
+  const startFestivalFilm = () => festivalFilm.play().catch(() => {});
+  if (festivalFilm.readyState >= 2) startFestivalFilm();
+  else festivalFilm.addEventListener("canplay", startFestivalFilm, { once: true });
+}
+
 const applyProgramFilter = filter => {
   const programList = document.getElementById("programList");
   if (programList) programList.dataset.filter = filter;
