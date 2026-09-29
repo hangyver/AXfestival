@@ -6,7 +6,8 @@
   const formatSession = session => {
     const room = roomFor(session);
     const description = session.description ? ` ${session.description}` : "";
-    return `${session.start}–${session.end}, ${room.floor} ${room.name}: ‘${session.title}’ (${session.speaker}) · ${session.status}.${description}`;
+    const speaker = session.speaker ? ` (${session.speaker})` : "";
+    return `${session.start}–${session.end}, ${room.floor} ${room.name}: ‘${session.title}’${speaker}.${description}`;
   };
   function requestedTime(question) {
     const colon = question.match(/(오전|오후)?\s*(\d{1,2}):(\d{2})/);

@@ -354,7 +354,6 @@ body { font-family: "Noto Sans KR", sans-serif; color: var(--ink); background: #
 .program-room-label { display:inline-flex; width:fit-content; padding:.38rem .62rem; border-radius:999px; font-size:.66rem; font-weight:800; white-space:nowrap; }
 .program-duration { color:#91a2af; font:700 .62rem "Manrope",sans-serif; white-space:nowrap; }
 .program-session-card .program-session { margin-top:1rem; }
-.program-session-card .program-status { align-self:flex-end; margin-top:auto; }
 .room-label-world,
 .room-label-creation1,
 .room-label-creation2 { border: 1px solid transparent; box-shadow: inset 0 1px 0 rgba(255,255,255,.55); }
@@ -362,8 +361,20 @@ body { font-family: "Noto Sans KR", sans-serif; color: var(--ink); background: #
 .room-label-creation1 { color: #9d174d; background: linear-gradient(135deg,#fce7f3,#fbcfe8); border-color: #f9a8d4; }
 .room-label-creation2 { color: #fff; background: linear-gradient(135deg,#ec4899,#be185d); border-color: #be185d; box-shadow: 0 5px 14px rgba(190,24,93,.18), inset 0 1px 0 rgba(255,255,255,.25); }
 .program-session h3 { color: #253e56; font-size: .92rem; font-weight: 800; line-height:1.5; }
-.program-session p { margin-top: .35rem; color: #8293a1; font-size: .72rem; line-height:1.55; }
-.program-status { justify-self: end; padding: .38rem .65rem; border-radius: 999px; color: #60758a; background: #eef3f6; font-size: .68rem; font-weight: 800; }
+.program-session .program-speaker {
+  width: fit-content;
+  margin-top: .7rem;
+  padding: .34rem .58rem;
+  border-left: 3px solid #18a8bd;
+  border-radius: 0 .4rem .4rem 0;
+  color: #07576c;
+  background: #eaf8fa;
+  font-size: .76rem;
+  font-weight: 800;
+  line-height: 1.55;
+}
+.program-session .program-description { margin-top: .4rem; color: #617487; font-size: .72rem; line-height: 1.55; }
+.program-session .program-description-opening { margin-top: .65rem; color: #0d63a8; font-size: .86rem; font-weight: 800; line-height: 1.6; }
 .program-notice { display: flex; gap: 1rem; margin-top: 1.25rem; padding: 1.2rem 1.3rem; border: 1px solid #cfe5ef; border-radius: 1.25rem; color: #31536b; background: linear-gradient(110deg,#eef9fb,#f5fbff); }
 .program-notice-icon { display: grid; width: 2rem; height: 2rem; flex: none; place-items: center; border-radius: 50%; color: #fff; background: var(--blue); font: 800 .8rem "Manrope",sans-serif; }
 .program-notice strong { font-size: .85rem; }
@@ -464,7 +475,6 @@ body { font-family: "Noto Sans KR", sans-serif; color: var(--ink); background: #
   .chat-panel { width: calc(100vw - 2rem) !important; right: -.25rem !important; bottom: 5.7rem; }
 }
 
-.program-status.is-confirmed { color: #087f5b; background: #dff8ed; }
 
 /* Festival film — a restrained cinema frame for the official promotional video. */
 .festival-film-section { overflow:hidden; }
@@ -491,7 +501,6 @@ body { font-family: "Noto Sans KR", sans-serif; color: var(--ink); background: #
 .program-track-world { color:#713f12; border-color:#fde68a; background:linear-gradient(145deg,#fffbeb,#fef3c7); }
 .program-track-creation1 { color:#9d174d; border-color:#fbcfe8; background:linear-gradient(145deg,#fff1f7,#fce7f3); }
 .program-track-creation2 { color:#9d174d; border-color:#f9a8d4; background:linear-gradient(145deg,#fdf2f8,#fbcfe8); }
-.program-status.is-draft { color:#9a5b08; background:#fff3cd; }
 @media (max-width: 767px) { .program-track-grid { grid-template-columns:1fr; } .program-track-card { min-height:auto; } }
 @media (max-width: 767px) {
   .festival-film-shell { padding:.8rem; }

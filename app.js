@@ -388,14 +388,15 @@ if (programList) {
   programList.innerHTML = [...groupedSessions].map(([start, sessions]) => {
     const cards = sessions.map(session => {
       const room = programData.rooms.find(item => item.id === session.roomId);
-      const details = [session.speaker, session.description].filter(Boolean).join(" · ");
-      const statusClass = session.status === "확정" ? " is-confirmed" : session.status === "편성안" ? " is-draft" : "";
+      const speaker = session.speaker ? `<p class="program-speaker">${session.speaker}</p>` : "";
+      const description = session.description
+        ? `<p class="program-description${session.category.includes("개회") ? " program-description-opening" : ""}">${session.description}</p>`
+        : "";
       const duration = Number(session.end.slice(0, 2)) - Number(session.start.slice(0, 2));
       const durationLabel = duration > 1 ? `${duration}시간 프로그램` : `${session.start}–${session.end}`;
       return `<article class="program-session-card" data-room="${room.id}">
         <div class="program-card-top"><span class="program-room-label ${room.labelClass}">${room.floor} · ${room.name}</span><span class="program-duration">${durationLabel}</span></div>
-        <div class="program-session"><h3>${session.title}</h3><p>${details || "세부 내용 등록 예정"}</p></div>
-        <span class="program-status${statusClass}">${session.status}</span>
+        <div class="program-session"><h3>${session.title}</h3>${speaker || description ? `${speaker}${description}` : `<p class="program-description">세부 내용 등록 예정</p>`}</div>
       </article>`;
     }).join("");
     return `<section class="program-hour-group" data-time="${start}">
