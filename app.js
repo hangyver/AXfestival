@@ -14,11 +14,10 @@ function header(active = page) {
     <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 lg:px-8">
       <a href="index.html" class="flex items-center gap-3" aria-label="제11회 대한민국 약사학술제 홈">
         <span class="brand-mark grid h-10 w-10 place-items-center rounded-full border border-white/20 bg-white/10 font-display text-xs font-extrabold tracking-wider">KPA</span>
-        <span class="leading-tight"><strong class="block text-sm font-bold">대한민국 약사학술제</strong><span class="block text-[10px] tracking-[.17em] opacity-60">KOREA PHARMACISTS ACADEMIC FESTIVAL</span></span>
+        <strong class="text-base font-bold tracking-[-.03em]">대한민국 약사학술제</strong>
       </a>
       <nav class="hidden items-center gap-8 md:flex" aria-label="주요 메뉴">
         ${items.map(([id, href, label]) => `<a class="nav-link text-sm font-medium text-white/75 transition hover:text-white" href="${href}" ${active === id ? 'aria-current="page"' : ""}>${label}</a>`).join("")}
-        <button data-chat-open class="rounded-full bg-white px-5 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-cyan-100">AX Agent</button>
       </nav>
       <button id="mobileMenuButton" class="mobile-menu-button grid h-11 w-11 place-items-center rounded-full border border-white/20 md:hidden" aria-label="메뉴 열기" aria-expanded="false">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
@@ -26,7 +25,6 @@ function header(active = page) {
     </div>
     <div id="mobileMenu" class="hidden border-t border-slate-100 bg-white px-5 py-5 text-slate-900 shadow-xl md:hidden">
       ${items.map(([id, href, label]) => `<a class="block rounded-xl px-4 py-3 text-sm font-bold ${active === id ? "bg-blue-50 text-blue-700" : ""}" href="${href}">${label}</a>`).join("")}
-      <button data-chat-open class="mt-3 w-full rounded-xl bg-slate-900 px-4 py-3 text-left text-sm font-bold text-white">AX 학술제 Agent 열기</button>
     </div>
   </header>`;
 }
@@ -35,23 +33,22 @@ function footer() {
   return `<footer class="bg-[#06172a] text-white">
     <div class="mx-auto grid max-w-7xl gap-10 px-5 py-12 md:grid-cols-[1fr_auto] lg:px-8">
       <div><p class="font-display text-xl font-extrabold">제11회 대한민국 약사학술제</p><p class="mt-2 text-sm text-slate-400">AX 시대, 약사 직능의 새로운 도약</p></div>
-      <div class="flex flex-wrap gap-x-6 gap-y-2 text-sm text-slate-400"><a href="program.html" class="hover:text-white">강의 일정</a><a href="venue.html" class="hover:text-white">행사장 안내</a><button data-chat-open class="hover:text-white">AX Agent</button></div>
+      <div class="flex flex-wrap gap-x-6 gap-y-2 text-sm text-slate-400"><a href="program.html" class="hover:text-white">강의 일정</a><a href="venue.html" class="hover:text-white">행사장 안내</a></div>
     </div>
-    <div class="border-t border-white/10 px-5 py-5 text-center text-xs text-slate-500">© 2026 Korea Pharmacists Academic Festival. 행사 세부 내용은 추후 업데이트됩니다.</div>
   </footer>`;
 }
 
 function chatbot() {
-  return `<div class="fixed bottom-5 right-5 z-50">
-    <section id="chatPanel" class="chat-panel is-closed absolute bottom-[4.7rem] right-0 flex h-[570px] w-[390px] flex-col overflow-hidden rounded-[1.6rem] border border-slate-200 bg-white shadow-2xl" aria-label="AX 학술제 에이전트" aria-hidden="true">
-      <div class="bg-[#071b32] px-5 py-4 text-white"><div class="flex items-center justify-between gap-3"><div class="flex min-w-0 items-center gap-3"><span class="relative grid h-10 w-10 shrink-0 place-items-center rounded-full bg-cyan-400 text-slate-900"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8V4H8M6 8h12a2 2 0 0 1 2 2v8H4v-8a2 2 0 0 1 2-2Z"/><path d="M9 13h.01M15 13h.01M9 18v2M15 18v2"/></svg><i class="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-[#071b32] bg-emerald-400"></i></span><div class="min-w-0"><strong class="block truncate text-sm">AX 학술제 Agent</strong><span class="block truncate text-xs text-slate-400">행사 지식을 연결하는 안내 에이전트</span></div></div><div class="flex shrink-0 items-center"><button id="chatCapture" class="grid h-9 w-9 place-items-center rounded-full text-slate-300 transition hover:bg-white/10 hover:text-white" aria-label="대화를 이미지로 저장 또는 공유" title="대화를 이미지로 저장 또는 공유"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 4 16 6h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3l1.5-2Z"/><circle cx="12" cy="13" r="3"/></svg></button><button id="chatClose" class="grid h-9 w-9 place-items-center rounded-full text-slate-400 transition hover:bg-white/10 hover:text-white" aria-label="에이전트 닫기">✕</button></div></div></div>
+  return `<div class="chat-dock">
+    <button id="chatLauncher" class="chat-launcher" aria-label="학술제 안내 열기: 강의, 장소, 편하게 물어보세요" aria-controls="chatPanel" aria-expanded="false"><span class="chat-launcher-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"/><path d="M8 10h.01M12 10h.01M16 10h.01"/></svg></span><span class="chat-launcher-copy"><strong>학술제 안내</strong><span>강의, 장소, 편하게 물어보세요</span></span><svg class="chat-launcher-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+    <section id="chatPanel" class="chat-panel is-closed flex flex-col overflow-hidden rounded-[1.6rem] border border-slate-200 bg-white shadow-2xl" aria-label="학술제 안내" aria-hidden="true">
+      <div class="bg-[#071b32] px-5 py-4 text-white"><div class="flex items-center justify-between gap-3"><div class="flex min-w-0 items-center gap-3"><span class="relative grid h-10 w-10 shrink-0 place-items-center rounded-full bg-cyan-400 text-slate-900"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8V4H8M6 8h12a2 2 0 0 1 2 2v8H4v-8a2 2 0 0 1 2-2Z"/><path d="M9 13h.01M15 13h.01M9 18v2M15 18v2"/></svg><i class="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-[#071b32] bg-emerald-400"></i></span><div class="min-w-0"><strong class="block truncate text-sm">학술제 안내</strong><span class="block truncate text-xs text-slate-300">강의, 장소, 편하게 물어보세요</span></div></div><div class="flex shrink-0 items-center"><button id="chatCapture" class="grid h-9 w-9 place-items-center rounded-full text-slate-300 transition hover:bg-white/10 hover:text-white" aria-label="대화를 이미지로 저장 또는 공유" title="대화를 이미지로 저장 또는 공유"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 4 16 6h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3l1.5-2Z"/><circle cx="12" cy="13" r="3"/></svg></button><button id="chatClose" class="grid h-9 w-9 place-items-center rounded-full text-slate-400 transition hover:bg-white/10 hover:text-white" aria-label="학술제 안내 닫기">✕</button></div></div></div>
       <div class="flex items-center justify-between border-b border-cyan-100 bg-cyan-50 px-4 py-2.5 text-[11px]"><span class="flex items-center gap-2 font-bold text-cyan-900"><i class="h-2 w-2 rounded-full bg-emerald-500"></i>기본 행사 안내 활성</span><span class="text-cyan-700">웹사이트 등록 정보 연결</span></div>
-      <div id="chatMessages" class="flex-1 space-y-3 overflow-y-auto bg-slate-50 p-4" aria-live="polite"><div class="chat-message max-w-[88%] rounded-2xl rounded-tl-sm bg-white p-3 text-sm leading-6 text-slate-700 shadow-sm" data-role="assistant">안녕하세요! 제11회 대한민국 약사학술제 AX Agent입니다. 웹사이트에 등록된 행사 일정, 강사, 강의 내용과 오시는 길을 정확하게 찾아 안내해 드립니다.</div></div>
+      <div id="chatMessages" class="flex-1 space-y-3 overflow-y-auto bg-slate-50 p-4" aria-live="polite"><div class="chat-message max-w-[88%] rounded-2xl rounded-tl-sm bg-white p-3 text-sm leading-6 text-slate-700 shadow-sm" data-role="assistant">안녕하세요! 학술제 안내입니다. 웹사이트에 등록된 행사 일정, 강사, 강의 내용과 오시는 길을 찾아 안내해 드립니다.</div></div>
       <div id="chatSuggestions" class="flex gap-2 overflow-x-auto border-t border-slate-100 bg-white px-4 py-3"><button class="chat-chip whitespace-nowrap rounded-full border border-slate-200 px-3 py-1.5 text-xs font-bold text-slate-600" data-question="행사 시간은?">행사 시간</button><button class="chat-chip whitespace-nowrap rounded-full border border-slate-200 px-3 py-1.5 text-xs font-bold text-slate-600" data-question="강의실은 어디야?">강의실</button><button class="chat-chip whitespace-nowrap rounded-full border border-slate-200 px-3 py-1.5 text-xs font-bold text-slate-600" data-question="지하철로 어떻게 가?">오시는 길</button></div>
       <form id="chatForm" class="flex gap-2 border-t border-slate-100 bg-white p-3"><label class="sr-only" for="chatInput">질문 입력</label><input id="chatInput" class="min-w-0 flex-1 rounded-xl bg-slate-100 px-4 py-3 text-sm outline-none ring-blue-500 focus:ring-2" placeholder="행사 정보를 물어보세요" autocomplete="off"><button class="grid h-11 w-11 place-items-center rounded-xl bg-blue-600 text-white" aria-label="질문 보내기"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></button></form>
     </section>
-    <div id="captureToast" class="pointer-events-none absolute bottom-[4.7rem] right-0 mb-2 w-max translate-y-2 rounded-full bg-slate-950 px-4 py-2 text-xs font-bold text-white opacity-0 shadow-xl transition" role="status">대화 이미지를 저장했습니다</div>
-    <button id="chatLauncher" class="relative grid h-14 w-14 place-items-center rounded-full bg-blue-600 text-white shadow-[0_12px_35px_rgba(13,119,232,.4)] transition hover:-translate-y-1 hover:bg-blue-700" aria-label="AX 학술제 에이전트 열기" aria-expanded="false"><span class="absolute -left-20 rounded-full bg-white px-3 py-1.5 text-[11px] font-extrabold text-blue-700 shadow-lg">AX Agent</span><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"/><path d="M8 10h.01M12 10h.01M16 10h.01"/></svg></button>
+    <div id="captureToast" class="pointer-events-none absolute right-0 top-full z-10 mt-3 w-max max-w-[calc(100vw-2rem)] translate-y-2 rounded-full bg-slate-950 px-4 py-2 text-xs font-bold text-white opacity-0 shadow-xl transition" role="status">대화 이미지를 저장했습니다</div>
   </div>`;
 }
 document.querySelector("[data-header]").innerHTML = header();
@@ -64,12 +61,17 @@ syncHeader(); addEventListener("scroll", syncHeader, { passive: true });
 
 const menuButton = document.getElementById("mobileMenuButton");
 const mobileMenu = document.getElementById("mobileMenu");
-menuButton.addEventListener("click", () => { const open = mobileMenu.classList.toggle("hidden") === false; menuButton.setAttribute("aria-expanded", open); });
+menuButton.addEventListener("click", () => {
+  const open = mobileMenu.classList.toggle("hidden") === false;
+  menuButton.setAttribute("aria-expanded", open);
+  document.querySelector(".chat-dock").classList.toggle("is-menu-open", open);
+  if (open) setChat(false);
+});
 
 const panel = document.getElementById("chatPanel");
 const launcher = document.getElementById("chatLauncher");
 const input = document.getElementById("chatInput");
-function setChat(open) { panel.classList.toggle("is-closed", !open); panel.setAttribute("aria-hidden", !open); launcher.setAttribute("aria-expanded", open); if (open) setTimeout(() => input.focus(), 100); }
+function setChat(open) { panel.classList.toggle("is-closed", !open); panel.setAttribute("aria-hidden", !open); launcher.setAttribute("aria-expanded", open); launcher.setAttribute("aria-label", open ? "학술제 안내 닫기" : "학술제 안내 열기: 강의, 장소, 편하게 물어보세요"); if (open) setTimeout(() => input.focus(), 100); }
 launcher.addEventListener("click", () => setChat(panel.classList.contains("is-closed")));
 document.getElementById("chatClose").addEventListener("click", () => setChat(false));
 document.querySelectorAll("[data-chat-open]").forEach(button => button.addEventListener("click", () => setChat(true)));
@@ -101,7 +103,7 @@ async function captureConversation() {
   const head = ctx.createLinearGradient(0, 0, width, 0); head.addColorStop(0, "#071b32"); head.addColorStop(1, "#0b3656"); ctx.fillStyle = head; ctx.fillRect(0, 0, width, 220);
   ctx.fillStyle = "#48e2dc"; ctx.beginPath(); ctx.arc(90, 78, 26, 0, Math.PI * 2); ctx.fill();
   ctx.fillStyle = "#ffffff"; ctx.font = '800 38px "Noto Sans KR", sans-serif'; ctx.fillText("제11회 대한민국 약사학술제", 64, 145);
-  ctx.fillStyle = "#9eeef0"; ctx.font = '700 22px "Noto Sans KR", sans-serif'; ctx.fillText("AX 학술제 Agent · 대화 기록", 130, 86);
+  ctx.fillStyle = "#9eeef0"; ctx.font = '700 22px "Noto Sans KR", sans-serif'; ctx.fillText("학술제 안내 · 대화 기록", 130, 86);
   ctx.fillStyle = "#a9bbca"; ctx.font = '20px "Noto Sans KR", sans-serif'; ctx.fillText("AX 시대, 약사 직능의 새로운 도약", 64, 187);
   let y = 270;
   for (const message of messages) {
@@ -114,7 +116,7 @@ async function captureConversation() {
   }
   ctx.fillStyle = "#60758a"; ctx.font = '18px "Noto Sans KR", sans-serif'; ctx.fillText("2026. 11. 29. SUN · 서울 양재 aT센터", margin, canvas.height - 58);
   const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/png")); if (!blob) return;
-  const filename = `제11회-약사학술제-Agent-대화-${new Date().toISOString().slice(0,10)}.png`;
+  const filename = `제11회-약사학술제-안내-대화-${new Date().toISOString().slice(0,10)}.png`;
   const toast = document.getElementById("captureToast");
   const showCaptureToast = message => {
     toast.textContent = message;
@@ -127,8 +129,8 @@ async function captureConversation() {
     try {
       await navigator.share({
         files: [imageFile],
-        title: "AX 학술제 Agent 대화 기록",
-        text: "제11회 대한민국 약사학술제 AX Agent 대화 이미지"
+        title: "학술제 안내 대화 기록",
+        text: "제11회 대한민국 약사학술제 안내 대화 이미지"
       });
       showCaptureToast("이미지 저장·공유 메뉴로 전송했습니다");
       return;
@@ -377,6 +379,14 @@ document.querySelectorAll("[data-filter]").forEach(button => button.addEventList
 const programList = document.getElementById("programList");
 if (programList) {
   const programData = window.FESTIVAL_DATA;
+  const renderFeature = feature => `<div class="program-feature">
+    <p class="program-feature-organizer">${feature.organizer}</p>
+    ${feature.sections.map(section => `<div class="program-feature-section">
+      <strong>${section.title}</strong>
+      ${section.subtitle ? `<p>${section.subtitle}</p>` : ""}
+      ${section.activities ? `<ul>${section.activities.map(activity => `<li><span>${activity.title}</span><small>${activity.speaker}</small></li>`).join("")}</ul>` : ""}
+    </div>`).join("")}
+  </div>`;
   const roomOrder = new Map(programData.rooms.map((room, index) => [room.id, index]));
   const orderedSessions = [...programData.sessions].sort((a, b) => a.start.localeCompare(b.start) || roomOrder.get(a.roomId) - roomOrder.get(b.roomId));
   const groupedSessions = orderedSessions.reduce((groups, session) => {
@@ -392,11 +402,12 @@ if (programList) {
       const description = session.description
         ? `<p class="program-description${session.category.includes("개회") ? " program-description-opening" : ""}">${session.description}</p>`
         : "";
+      const feature = session.feature ? renderFeature(session.feature) : "";
       const duration = Number(session.end.slice(0, 2)) - Number(session.start.slice(0, 2));
-      const durationLabel = duration > 1 ? `${duration}시간 프로그램` : `${session.start}–${session.end}`;
-      return `<article class="program-session-card" data-room="${room.id}">
+      const durationLabel = session.feature?.timeLabel || (duration > 1 ? `${duration}시간 프로그램` : `${session.start}–${session.end}`);
+      return `<article class="program-session-card${session.feature ? " program-session-card-feature" : ""}" data-room="${room.id}">
         <div class="program-card-top"><span class="program-room-label ${room.labelClass}">${room.floor} · ${room.name}</span><span class="program-duration">${durationLabel}</span></div>
-        <div class="program-session"><h3>${session.title}</h3>${speaker || description ? `${speaker}${description}` : `<p class="program-description">세부 내용 등록 예정</p>`}</div>
+        <div class="program-session"><h3 class="${session.category.includes("개회") ? "program-title-opening" : ""}">${session.title}</h3>${speaker}${description}${feature}</div>
       </article>`;
     }).join("");
     return `<section class="program-hour-group" data-time="${start}">
