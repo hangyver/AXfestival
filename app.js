@@ -379,12 +379,17 @@ document.querySelectorAll("[data-filter]").forEach(button => button.addEventList
 const programList = document.getElementById("programList");
 if (programList) {
   const programData = window.FESTIVAL_DATA;
+  const renderSpeaker = speaker => {
+    const [, name, affiliation] = speaker.match(/^(.*?)\s*\(([^()]*)\)$/) || [];
+    return `<p class="program-speaker"><span class="program-speaker-name">${name || speaker}</span>${affiliation ? `<span class="program-speaker-affiliation">${affiliation}</span>` : ""}</p>`;
+  };
   const renderFeature = feature => `<div class="program-feature">
     <p class="program-feature-organizer">${feature.organizer}</p>
     ${feature.sections.map(section => `<div class="program-feature-section">
       <strong>${section.title}</strong>
       ${section.subtitle ? `<p>${section.subtitle}</p>` : ""}
-      ${section.activities ? `<ul>${section.activities.map(activity => `<li><span>${activity.title}</span><small>${activity.speaker}</small></li>`).join("")}</ul>` : ""}
+      ${section.activities ? `<ul>${section.activities.map(activity => `<li>${activity.title}</li>`).join("")}</ul>` : ""}
+      ${section.speakers ? `<div class="program-feature-speakers"><span class="program-feature-speakers-label">두 실습 공동 진행</span>${renderSpeaker(section.speakers)}</div>` : ""}
     </div>`).join("")}
   </div>`;
   const roomOrder = new Map(programData.rooms.map((room, index) => [room.id, index]));
@@ -398,7 +403,7 @@ if (programList) {
   programList.innerHTML = [...groupedSessions].map(([start, sessions]) => {
     const cards = sessions.map(session => {
       const room = programData.rooms.find(item => item.id === session.roomId);
-      const speaker = session.speaker ? `<p class="program-speaker">${session.speaker}</p>` : "";
+      const speaker = session.speaker ? renderSpeaker(session.speaker) : "";
       const description = session.description
         ? `<p class="program-description${session.category.includes("개회") ? " program-description-opening" : ""}">${session.description}</p>`
         : "";

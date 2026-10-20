@@ -8,7 +8,7 @@
     const description = session.description ? ` ${session.description}` : "";
     const speaker = session.speaker ? ` (${session.speaker})` : "";
     const feature = session.feature
-      ? ` ${session.feature.organizer}. ${session.feature.sections.map(section => [section.title, section.subtitle, ...(section.activities || []).map(activity => `${activity.title} (${activity.speaker})`)].filter(Boolean).join(" · ")).join(" / ")}.`
+      ? ` ${session.feature.organizer}. ${session.feature.sections.map(section => [section.title, section.subtitle, ...(section.activities || []).map(activity => activity.title), section.speakers ? `두 실습 공동 진행: ${section.speakers}` : ""].filter(Boolean).join(" · ")).join(" / ")}.`
       : "";
     const timeRange = session.feature ? session.feature.timeLabel.split(" ")[0] : `${session.start}–${session.end}`;
     return `${timeRange}, ${room.floor} ${room.name}: ‘${session.title}’${speaker}.${description}${feature}`;
@@ -35,7 +35,7 @@
     const stopWords = ["강의", "강사", "일정", "시간", "내용", "알려줘", "누구", "어디", "뭐야", "무엇", "하는", "설명", "세션"];
     const tokens = question.split(/[\s,?!.]+/).map(normalize).filter(token => token.length >= 2 && !stopWords.includes(token));
     return registered().filter(session => {
-      const featureTerms = session.feature ? [session.feature.organizer, ...session.feature.sections.flatMap(section => [section.title, section.subtitle, ...(section.activities || []).flatMap(activity => [activity.title, activity.speaker])])] : [];
+      const featureTerms = session.feature ? [session.feature.organizer, ...session.feature.sections.flatMap(section => [section.title, section.subtitle, section.speakers, ...(section.activities || []).map(activity => activity.title)])] : [];
       const searchable = normalize([session.title, session.speaker, session.description, ...(session.category || []), ...featureTerms].join(" "));
       return (tokens.length > 1 ? tokens.every(token => searchable.includes(token)) : tokens.some(token => searchable.includes(token))) || searchable.includes(normalizedQuestion);
     });

@@ -7,11 +7,12 @@ const aiPharmacyWorkshop = {
     { title: "AI 우수 활용사례 발표" },
     {
       title: "AI 약국 실전 세션",
-      subtitle: "ChatGPT로 약국 마케팅 가격텍 만들기",
+      subtitle: "ChatGPT로 약국 마케팅 가격택 만들기",
       activities: [
-        { title: "메타 프롬프팅으로 가격텍 제작 프롬프트 작성하기", speaker: "김정현 강사 (대한약사회 미래약사위원)" },
-        { title: "스킬 제작 및 가격텍 PDF 제작", speaker: "한현지 강사 (대한약사회 미래약사위원)" }
-      ]
+        { title: "메타 프롬프팅으로 가격택 제작 프롬프트 작성하기" },
+        { title: "스킬 제작 및 가격택 PDF 제작" }
+      ],
+      speakers: "김정현 강사 · 한현지 강사 (대한약사회 미래약사위원)"
     }
   ]
 };
@@ -57,8 +58,8 @@ const FESTIVAL_DATA = {
     { id: "1200-creation2", roomId: "creation2", start: "12:00", end: "13:00", title: "통합약물관리 전문약사제도에 대한 이해", speaker: "정병욱 강사 (대한약사회 전문약사관리원장)", description: "", category: ["통합약물관리", "전문약사제도"], status: "편성안" },
     { id: "1300-creation2", roomId: "creation2", start: "13:00", end: "14:00", title: "증상별 한약제제 선택과 상담", speaker: "김연홍 강사 (경기도약사회 한약위원장)", description: "약국기본세팅 15종", category: ["한약제제", "복약상담"], status: "편성안" },
     { id: "1400-creation2", roomId: "creation2", start: "14:00", end: "15:00", title: "체중 관리의 한방 원리와 한약제제 활용 전략", speaker: "배현 강사 (팜클래스 한방 전문강사)", description: "", category: ["체중 관리", "한방", "한약제제"], status: "편성안" },
-    { id: "1500-creation2", roomId: "creation2", start: "15:00", end: "16:00", title: "AI 우수 활용사례 공유 및 AI 약국 실전 세션", speaker: "", description: "", feature: aiPharmacyWorkshop, category: ["AI", "활용사례", "약국 실전", "ChatGPT", "가격텍", "김정현", "한현지"], status: "편성안" },
-    { id: "1600-creation2", roomId: "creation2", start: "16:00", end: "17:00", title: "AI 우수 활용사례 공유 및 AI 약국 실전 세션 (계속)", speaker: "", description: "", feature: aiPharmacyWorkshop, category: ["AI", "활용사례", "약국 실전", "ChatGPT", "가격텍", "김정현", "한현지"], status: "편성안" }
+    { id: "1500-creation2", roomId: "creation2", start: "15:00", end: "16:00", title: "AI 우수 활용사례 공유 및 AI 약국 실전 세션", speaker: "", description: "", feature: aiPharmacyWorkshop, category: ["AI", "활용사례", "약국 실전", "ChatGPT", "가격택", "김정현", "한현지"], status: "편성안" },
+    { id: "1600-creation2", roomId: "creation2", start: "16:00", end: "17:00", title: "AI 우수 활용사례 공유 및 AI 약국 실전 세션 (계속)", speaker: "", description: "", feature: aiPharmacyWorkshop, category: ["AI", "활용사례", "약국 실전", "ChatGPT", "가격택", "김정현", "한현지"], status: "편성안" }
   ]
 };
 

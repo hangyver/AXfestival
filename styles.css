@@ -387,16 +387,17 @@ body { font-family: "Noto Sans KR", sans-serif; color: var(--ink); background: #
 .program-session .program-title-opening { color: #0d63a8; font-size: 1rem; }
 .program-session .program-speaker {
   width: fit-content;
+  max-width: 100%;
   margin-top: .7rem;
-  padding: .34rem .58rem;
+  padding: .42rem .62rem;
   border-left: 3px solid #18a8bd;
   border-radius: 0 .4rem .4rem 0;
   color: #07576c;
   background: #eaf8fa;
-  font-size: .76rem;
-  font-weight: 800;
   line-height: 1.55;
 }
+.program-speaker-name { display: block; color: #07576c; font-size: .78rem; font-weight: 800; }
+.program-speaker-affiliation { display: block; margin-top: .08rem; color: #41687a; font-size: .7rem; font-weight: 650; overflow-wrap: anywhere; }
 .program-session .program-description { margin-top: .4rem; color: #617487; font-size: .72rem; line-height: 1.55; }
 .program-session .program-description-opening { margin-top: .65rem; color: #0d63a8; font-size: .86rem; font-weight: 800; line-height: 1.6; }
 .program-session-card-feature { border-color: #f9c7df; background: linear-gradient(145deg, #fff, #fff9fc); }
@@ -410,8 +411,9 @@ body { font-family: "Noto Sans KR", sans-serif; color: var(--ink); background: #
 .program-feature-section p { margin-top: .22rem; color: #38546b; font-size: .72rem; font-weight: 700; line-height: 1.5; }
 .program-feature-section ul { display: grid; gap: .45rem; margin-top: .55rem; }
 .program-feature-section li { padding-left: .55rem; border-left: 2px solid #f9a8d4; color: #40586e; font-size: .7rem; line-height: 1.45; }
-.program-feature-section li span, .program-feature-section li small { display: block; }
-.program-feature-section li small { margin-top: .1rem; color: #a21d5b; font-size: .68rem; font-weight: 800; }
+.program-feature-speakers { margin-top: .7rem; padding: .55rem .65rem; border: 1px solid #fbcfe8; border-radius: .65rem; background: #fff6fa; }
+.program-feature-speakers-label { color: #9d174d; font-size: .66rem; font-weight: 800; }
+.program-feature-section .program-feature-speakers .program-speaker { margin-top: .2rem; }
 .program-notice { display: flex; gap: 1rem; margin-top: 1.25rem; padding: 1.2rem 1.3rem; border: 1px solid #cfe5ef; border-radius: 1.25rem; color: #31536b; background: linear-gradient(110deg,#eef9fb,#f5fbff); }
 .program-notice-icon { display: grid; width: 2rem; height: 2rem; flex: none; place-items: center; border-radius: 50%; color: #fff; background: var(--blue); font: 800 .8rem "Manrope",sans-serif; }
 .program-notice strong { font-size: .85rem; }
