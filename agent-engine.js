@@ -8,7 +8,7 @@
     const description = session.description ? ` ${session.description}` : "";
     const speaker = session.speaker ? ` (${session.speaker})` : "";
     const feature = session.feature
-      ? ` ${session.feature.organizer}. ${session.feature.sections.map(section => [section.title, section.subtitle, ...(section.activities || []).map(activity => activity.title), section.speakers ? `두 실습 공동 진행: ${section.speakers}` : ""].filter(Boolean).join(" · ")).join(" / ")}.`
+      ? ` ${session.feature.organizer}. ${session.feature.sections.map(section => [section.title, section.subtitle, ...(section.activities || []).map(activity => activity.title), section.speakers].filter(Boolean).join(" · ")).join(" / ")}.`
       : "";
     const timeRange = session.feature ? session.feature.timeLabel.split(" ")[0] : `${session.start}–${session.end}`;
     return `${timeRange}, ${room.floor} ${room.name}: ‘${session.title}’${speaker}.${description}${feature}`;

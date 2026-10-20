@@ -389,7 +389,7 @@ if (programList) {
       <strong>${section.title}</strong>
       ${section.subtitle ? `<p>${section.subtitle}</p>` : ""}
       ${section.activities ? `<ul>${section.activities.map(activity => `<li>${activity.title}</li>`).join("")}</ul>` : ""}
-      ${section.speakers ? `<div class="program-feature-speakers"><span class="program-feature-speakers-label">두 실습 공동 진행</span>${renderSpeaker(section.speakers)}</div>` : ""}
+      ${section.speakers ? `<div class="program-feature-speakers">${renderSpeaker(section.speakers)}</div>` : ""}
     </div>`).join("")}
   </div>`;
   const roomOrder = new Map(programData.rooms.map((room, index) => [room.id, index]));

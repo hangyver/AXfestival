@@ -412,8 +412,7 @@ body { font-family: "Noto Sans KR", sans-serif; color: var(--ink); background: #
 .program-feature-section ul { display: grid; gap: .45rem; margin-top: .55rem; }
 .program-feature-section li { padding-left: .55rem; border-left: 2px solid #f9a8d4; color: #40586e; font-size: .7rem; line-height: 1.45; }
 .program-feature-speakers { margin-top: .7rem; padding: .55rem .65rem; border: 1px solid #fbcfe8; border-radius: .65rem; background: #fff6fa; }
-.program-feature-speakers-label { color: #9d174d; font-size: .66rem; font-weight: 800; }
-.program-feature-section .program-feature-speakers .program-speaker { margin-top: .2rem; }
+.program-feature-section .program-feature-speakers .program-speaker { margin-top: 0; }
 .program-notice { display: flex; gap: 1rem; margin-top: 1.25rem; padding: 1.2rem 1.3rem; border: 1px solid #cfe5ef; border-radius: 1.25rem; color: #31536b; background: linear-gradient(110deg,#eef9fb,#f5fbff); }
 .program-notice-icon { display: grid; width: 2rem; height: 2rem; flex: none; place-items: center; border-radius: 50%; color: #fff; background: var(--blue); font: 800 .8rem "Manrope",sans-serif; }
 .program-notice strong { font-size: .85rem; }
