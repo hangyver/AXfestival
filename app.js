@@ -393,10 +393,12 @@ if (programList) {
     </div>`).join("")}
   </div>`;
   const roomOrder = new Map(programData.rooms.map((room, index) => [room.id, index]));
-  const orderedSessions = [...programData.sessions].sort((a, b) => a.start.localeCompare(b.start) || roomOrder.get(a.roomId) - roomOrder.get(b.roomId));
+  const slotOf = session => session.slotStart || session.start;
+  const orderedSessions = [...programData.sessions].sort((a, b) => slotOf(a).localeCompare(slotOf(b)) || roomOrder.get(a.roomId) - roomOrder.get(b.roomId));
   const groupedSessions = orderedSessions.reduce((groups, session) => {
-    if (!groups.has(session.start)) groups.set(session.start, []);
-    groups.get(session.start).push(session);
+    const slot = slotOf(session);
+    if (!groups.has(slot)) groups.set(slot, []);
+    groups.get(slot).push(session);
     return groups;
   }, new Map());
 
@@ -404,15 +406,17 @@ if (programList) {
     const cards = sessions.map(session => {
       const room = programData.rooms.find(item => item.id === session.roomId);
       const speaker = session.speaker ? renderSpeaker(session.speaker) : "";
+      const topics = session.topics ? `<ol class="program-topic-list" aria-label="강의 주제">${session.topics.map(topic => `<li>${topic}</li>`).join("")}</ol>` : "";
+      const speakers = session.speakers ? `<div class="program-speaker-pairings"><span>강사</span><ol aria-label="강사 명단">${session.speakers.map(person => `<li><strong>${person.name}</strong> ${person.role}</li>`).join("")}</ol></div>` : "";
       const description = session.description
         ? `<p class="program-description${session.category.includes("개회") ? " program-description-opening" : ""}">${session.description}</p>`
         : "";
       const feature = session.feature ? renderFeature(session.feature) : "";
-      const duration = Number(session.end.slice(0, 2)) - Number(session.start.slice(0, 2));
-      const durationLabel = session.feature?.timeLabel || (duration > 1 ? `${duration}시간 프로그램` : `${session.start}–${session.end}`);
+      const duration = (Number(session.end.slice(0, 2)) * 60 + Number(session.end.slice(3))) - (Number(session.start.slice(0, 2)) * 60 + Number(session.start.slice(3)));
+      const durationLabel = session.feature?.timeLabel || (duration > 60 ? `${duration / 60}시간 프로그램` : `${session.start}–${session.end}`);
       return `<article class="program-session-card${session.feature ? " program-session-card-feature" : ""}" data-room="${room.id}">
         <div class="program-card-top"><span class="program-room-label ${room.labelClass}">${room.floor} · ${room.name}</span><span class="program-duration">${durationLabel}</span></div>
-        <div class="program-session"><h3 class="${session.category.includes("개회") ? "program-title-opening" : ""}">${session.title}</h3>${speaker}${description}${feature}</div>
+        <div class="program-session"><h3 class="${session.category.includes("개회") ? "program-title-opening" : ""}">${session.title}</h3>${topics}${speaker}${speakers}${description}${feature}</div>
       </article>`;
     }).join("");
     return `<section class="program-hour-group" data-time="${start}">

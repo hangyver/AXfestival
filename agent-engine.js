@@ -5,13 +5,16 @@
   const roomFor = session => festival.rooms.find(room => room.id === session.roomId);
   const formatSession = session => {
     const room = roomFor(session);
+    const topics = session.topics ? ` 강의 주제: ${session.topics.map((topic, index) => `${index + 1}. ${topic}`).join(" / ")}.` : "";
     const description = session.description ? ` ${session.description}` : "";
-    const speaker = session.speaker ? ` (${session.speaker})` : "";
+    const speaker = session.speakers
+      ? ` 강사: ${session.speakers.map((person, index) => `${index + 1}. ${person.name} ${person.role}`).join(" / ")}.`
+      : session.speaker ? ` (${session.speaker})` : "";
     const feature = session.feature
       ? ` ${session.feature.organizer}. ${session.feature.sections.map(section => [section.title, section.subtitle, ...(section.activities || []).map(activity => activity.title), section.speakers].filter(Boolean).join(" · ")).join(" / ")}.`
       : "";
     const timeRange = session.feature ? session.feature.timeLabel.split(" ")[0] : `${session.start}–${session.end}`;
-    return `${timeRange}, ${room.floor} ${room.name}: ‘${session.title}’${speaker}.${description}${feature}`;
+    return `${timeRange}, ${room.floor} ${room.name}: ‘${session.title}’${topics}${speaker}${topics || session.speakers ? "" : "."}${description}${feature}`;
   };
   function requestedTime(question) {
     const colon = question.match(/(오전|오후)?\s*(\d{1,2}):(\d{2})/);
@@ -36,7 +39,7 @@
     const tokens = question.split(/[\s,?!.]+/).map(normalize).filter(token => token.length >= 2 && !stopWords.includes(token));
     return registered().filter(session => {
       const featureTerms = session.feature ? [session.feature.organizer, ...session.feature.sections.flatMap(section => [section.title, section.subtitle, section.speakers, ...(section.activities || []).map(activity => activity.title)])] : [];
-      const searchable = normalize([session.title, session.speaker, session.description, ...(session.category || []), ...featureTerms].join(" "));
+      const searchable = normalize([session.title, session.speaker, ...(session.topics || []), ...(session.speakers || []).flatMap(person => [person.name, person.role]), session.description, ...(session.category || []), ...featureTerms].join(" "));
       return (tokens.length > 1 ? tokens.every(token => searchable.includes(token)) : tokens.some(token => searchable.includes(token))) || searchable.includes(normalizedQuestion);
     });
   }
@@ -53,7 +56,7 @@
     if (/장소|주소|어디서|행사장/.test(q) && !room) return `행사 장소는 ${festival.venue.name}(${festival.venue.address})입니다. 3층 세계로룸과 4층 창조룸 Ⅰ·Ⅱ를 사용합니다.`;
 
     if (time) {
-      let sessions = festival.sessions.filter(session => session.start <= time && session.end > time);
+      let sessions = festival.sessions.filter(session => (session.start <= time && session.end > time) || (session.slotStart && session.slotStart <= time && session.start > time));
       if (room) sessions = sessions.filter(session => session.roomId === room.id);
       const ready = sessions.filter(session => session.status !== "편성 중");
       if (ready.length) return `${time} 강의 안내입니다.\n${ready.map(formatSession).join("\n")}`;

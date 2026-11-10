@@ -399,6 +399,14 @@ body { font-family: "Noto Sans KR", sans-serif; color: var(--ink); background: #
 }
 .program-speaker-name { display: block; color: #07576c; font-size: .78rem; font-weight: 800; }
 .program-speaker-affiliation { display: block; margin-top: .08rem; color: #41687a; font-size: .7rem; font-weight: 650; overflow-wrap: anywhere; }
+.program-topic-list,
+.program-speaker-pairings ol { display: grid; gap: .38rem; padding-left: 1.2rem; list-style: decimal; }
+.program-topic-list { margin-top: .6rem; color: #38546b; font-size: .75rem; font-weight: 650; line-height: 1.55; }
+.program-topic-list li::marker { color: #be185d; font-weight: 800; }
+.program-speaker-pairings { margin-top: .75rem; padding: .65rem .75rem; border-left: 3px solid #18a8bd; border-radius: 0 .5rem .5rem 0; background: #eaf8fa; color: #41687a; font-size: .72rem; line-height: 1.5; }
+.program-speaker-pairings > span { display: block; margin-bottom: .3rem; color: #07576c; font-size: .66rem; font-weight: 800; }
+.program-speaker-pairings li::marker,
+.program-speaker-pairings strong { color: #07576c; font-weight: 800; }
 .program-session .program-description { margin-top: .4rem; color: #617487; font-size: .72rem; line-height: 1.55; }
 .program-session .program-description-opening { margin-top: .65rem; color: #0d63a8; font-size: .86rem; font-weight: 800; line-height: 1.6; }
 .program-session-card-feature { border-color: #f9c7df; background: linear-gradient(145deg, #fff, #fff9fc); }
