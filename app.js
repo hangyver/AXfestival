@@ -414,9 +414,11 @@ if (programList) {
       const feature = session.feature ? renderFeature(session.feature) : "";
       const duration = (Number(session.end.slice(0, 2)) * 60 + Number(session.end.slice(3))) - (Number(session.start.slice(0, 2)) * 60 + Number(session.start.slice(3)));
       const durationLabel = session.feature?.timeLabel || (duration > 60 ? `${duration / 60}시간 프로그램` : `${session.start}–${session.end}`);
+      const isOpening = session.category.includes("개회");
+      const openingTime = isOpening ? `<p class="program-opening-time">${session.start} - ${session.end}</p>` : "";
       return `<article class="program-session-card${session.feature ? " program-session-card-feature" : ""}" data-room="${room.id}">
-        <div class="program-card-top"><span class="program-room-label ${room.labelClass}">${room.floor} · ${room.name}</span><span class="program-duration">${durationLabel}</span></div>
-        <div class="program-session"><h3 class="${session.category.includes("개회") ? "program-title-opening" : ""}">${session.title}</h3>${topics}${speaker}${speakers}${description}${feature}</div>
+        <div class="program-card-top"><span class="program-room-label ${room.labelClass}">${room.floor} · ${room.name}</span>${isOpening ? "" : `<span class="program-duration">${durationLabel}</span>`}</div>
+        <div class="program-session">${openingTime}<h3 class="${isOpening ? "program-title-opening" : ""}">${session.title}</h3>${topics}${speaker}${speakers}${description}${feature}</div>
       </article>`;
     }).join("");
     return `<section class="program-hour-group" data-time="${start}">
