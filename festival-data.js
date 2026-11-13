@@ -31,7 +31,7 @@ const FESTIVAL_DATA = {
     address: "서울특별시 서초구 강남대로 27",
     subway: "신분당선 양재시민의숲역(매헌) 4번 출구",
     walk: "4번 출구에서 도보 약 2분",
-    parking: "aT센터 주차장을 이용할 수 있으나 행사일에는 혼잡할 수 있어 대중교통 이용을 권장합니다."
+    parking: "주차비 지원은 안되며, 주차장이 협소하오니 가급적 대중교통을 이용하시기 바랍니다."
   },
   rooms: [
     { id: "world", floor: "3F", name: "세계로룸", track: "AI를 이해하고 활용하는 약사, 변화하는 약국", labelClass: "room-label-world" },
