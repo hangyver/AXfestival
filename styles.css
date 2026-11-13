@@ -471,6 +471,9 @@ body { font-family: "Noto Sans KR", sans-serif; color: var(--ink); background: #
 .route-method > span { display: grid; width: 2.25rem; height: 2.25rem; place-items:center; border-radius:.75rem; color:#071b32; background:var(--mint); font:800 .67rem "Manrope",sans-serif; }
 .route-method strong { color:#fff; font-size:.88rem; }
 .route-method p { margin-top:.3rem; color:#95a9b9; font-size:.77rem; line-height:1.6; }
+.route-method-parking { border-color: rgba(103,232,198,.4); background: rgba(103,232,198,.1); }
+.route-method-parking strong { color: var(--mint); font-size: 1rem; }
+.route-method-parking p { color: #f2fffb; font-size: .95rem; font-weight: 700; line-height: 1.7; }
 .route-map-link { display:inline-flex; align-items:center; gap:.7rem; margin-top:1.4rem; padding:.85rem 1.15rem; border-radius:999px; color:#071b32; background:var(--mint); font-size:.78rem; font-weight:800; transition:.2s ease; }
 .route-map-link:hover { transform:translateY(-2px); background:#a7f3d0; }
 .route-map-link span { font-size:1rem; }
